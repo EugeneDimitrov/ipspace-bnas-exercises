@@ -2,9 +2,10 @@
 This lab were created using GNS3 application.
 
 ## Images used
-### 1. Cisco L3 vios-adventerprisek9-m.vmdk.SPA.156-2.T
+### 1. Cisco L3 vios-adventerprisek9-m.vmdk.SPA.156-2.T csr1000v-universalk9.16.12.01a
 ### 2. Cisco L2 vios_l2-adventerprisek9-m.vmdk.SSA.152-4.0.55.E
-### 3. Mikrotik chr-6.41.4
+### 3. Cisco NX-OS nxosv.9.3.1
+### 4. Mikrotik chr-6.45.6
 
 ## Topology
 You can find network topology scheme in topology.png file under img folder:
