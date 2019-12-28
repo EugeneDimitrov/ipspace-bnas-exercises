@@ -1,0 +1,24 @@
+{% for host,facts in hostvars|dictsort if facts.nxos_cmd_results is defined %}
+{# Checking that hsrp command output is not null #}
+{%   if facts.nxos_cmd_results.stdout[0] | length > 0 %}
+{# Defining new variable for hsrp data #}
+{%   set hsrp_data = facts.nxos_cmd_results.stdout[0].TABLE_grp_detail.ROW_grp_detail %}
+{# Creating header with inventory device name #}
+{{ 29 * "=" + host.center(16) + 29 * "="}}
+
+{# Creating table header #}
+{{ 74 * "-" }}
+{{ "| " + "Interface name".ljust(16) }}{{ "| " + "HSRP Group id".ljust(15) }}{{ "| " + "Virtual IP address".ljust(20) }}{{ "| " + "Group state".ljust(13) + " |"}}
+{{ 74 * "-" }}
+{# Checking that nexus device returns dictionary with single hsrp group otherwise it's list of dictionaries #}
+{%     if hsrp_data.sh_if_index is defined %}
+{{ "| " + hsrp_data.sh_if_index.ljust(16) }}{{ "| " + (hsrp_data.sh_group_num|string).ljust(15) }}{{ "| " + hsrp_data.sh_vip.ljust(20) }}{{ "| " + hsrp_data.sh_group_state.ljust(13) + " |"}}
+{%     else %}
+{%       for hsrp_group in hsrp_data %}
+{{ "| " + hsrp_group.sh_if_index.ljust(16) }}{{ "| " + (hsrp_group.sh_group_num|string).ljust(15) }}{{ "| " + hsrp_group.sh_vip.ljust(20) }}{{ "| " + hsrp_group.sh_group_state.ljust(13) + " |"}}
+{%       endfor %}
+{%     endif %}
+{{ 74 * "-" }}
+{%   endif %}
+
+{% endfor%}

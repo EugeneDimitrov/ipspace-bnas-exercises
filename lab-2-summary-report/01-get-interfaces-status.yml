@@ -1,0 +1,24 @@
+# This playbook was created using Ansible 2.7.14
+---
+- hosts: all
+  vars:
+  - output_dir: output
+
+  tasks:
+  - name: "Get interface status information using NAPALM"
+    napalm_get_facts:
+      hostname: "{{ansible_host|default(inventory_hostname)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      dev_os: "{{ansible_network_os}}"
+      filter: ['facts','interfaces']
+
+  - name: "Create output directory if not exist"
+    file: path={{ output_dir }} state=directory
+    run_once: true
+  
+  - name: "Generate report"
+    template:
+      src=templates/01-interfaces-status-report.j2
+      dest={{ output_dir }}/01-interfaces-status-report.log  
+    run_once: true 

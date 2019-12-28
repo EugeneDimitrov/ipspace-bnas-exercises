@@ -1,0 +1,24 @@
+# This playbook was created using Ansible 2.7.14
+---
+- hosts: nxos
+  vars:
+  - output_dir: output
+
+  tasks:
+  - name: "Show hsrp status"
+    nxos_command:
+      commands: 
+        - command: show hsrp brief
+          output: json
+    register: nxos_cmd_results
+    when: ansible_network_os == 'nxos'
+
+  - name: "Create output directory if not exist"
+    file: path={{ output_dir }} state=directory
+    run_once: true
+
+  - name: "Generate report"
+    template:
+      src=templates/02-hsrp-status-report.j2
+      dest={{ output_dir }}/02-hsrp-status-report.log   
+    run_once: true 

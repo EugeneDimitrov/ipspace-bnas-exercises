@@ -1,0 +1,32 @@
+[ios]
+hub-r1      ansible_host=172.16.30.11
+hub-r2      ansible_host=172.16.30.12
+hub-sw1     ansible_host=172.16.30.13
+spoke1-r1   ansible_host=172.16.30.14
+spoke2-r1   ansible_host=172.16.30.15
+dc-r1		ansible_host=172.16.30.17
+dc-r2		ansible_host=172.16.30.18
+
+[ros]
+spoke3-r1   ansible_host=172.16.30.16
+
+[nxos]
+dc-sw1		ansible_host=172.16.30.19
+dc-sw2		ansible_host=172.16.30.20
+
+[all:vars]
+ansible_user=admin
+ansible_ssh_pass=admin
+ansible_python_interpreter="/usr/bin/env python" # if using python venv
+
+[ios:vars]
+ansible_network_os=ios
+
+[ros:vars]
+ansible_network_os=ros 
+
+[nxos:vars]
+ansible_network_os=nxos
+ansible_connection=httpapi 
+ansible_httpapi_use_ssl=true
+ansible_httpapi_validate_certs=false

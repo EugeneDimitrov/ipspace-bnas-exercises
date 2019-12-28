@@ -1,0 +1,17 @@
+{% for host,facts in hostvars|dictsort if facts.ansible_facts %}
+{# Creating header with inventory device name #}
+{{ 24 * "=" + host.center(15) + 24 * "="}}
+{{ "hostname: " + facts.ansible_facts.napalm_facts.hostname }}
+{{ "vendor name: " + facts.ansible_facts.napalm_facts.vendor }}
+{{ "serial number: " + facts.ansible_facts.napalm_facts.serial_number }}
+
+{# Creating table header #}
+{{ 63 * "-"}}
+{{ "| " + "Interface name".ljust(20) }}{{ "| " + "Admin state".ljust(15) }}{{ "| " + "Connection state".ljust(20) + " |"}}
+{{ 63 * "-"}}
+{%   for int_name,int_settings in facts.ansible_facts.napalm_interfaces|dictsort %}
+{{ "| " + int_name.ljust(20) }}{{ "| " + (int_settings["is_enabled"]|ternary ("Up","Down")).ljust(15) }}{{ "| " + (int_settings["is_up"]|ternary ("Up","Down")).ljust(20) + " |"}}
+{%   endfor %}
+{{ 63 * "-"}}
+
+{% endfor %}
