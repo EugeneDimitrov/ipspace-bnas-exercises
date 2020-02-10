@@ -1,0 +1,60 @@
+#
+# Base infrastructure definition
+#
+---
+common:
+  users:
+    - { username: admin, password: admin }
+    - { username: cisco, password: cisco }
+  
+  ntp:
+    - 172.16.0.1
+    - 172.16.0.2
+
+nodes:
+  - { hostname: hub-r1, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1, device_group: edge_router }
+  - { hostname: hub-r2, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2, device_group: edge_router }
+  - { hostname: hub-sw1, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3, device_group: core_switch }
+  - { hostname: spoke1-r1, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4, device_group: edge_router }
+  - { hostname: spoke2-r1, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5, device_group: edge_router }
+  - { hostname: spoke3-r1, os: ros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, device_group: edge_router }
+  - { hostname: dc-r1, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7, device_group: edge_router }
+  - { hostname: dc-r2, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8, device_group: edge_router }
+
+isp_links:
+  - node: hub-r1
+    ports: 
+      - { port: GigabitEthernet0/0, ip: 5.5.5.2/24, gw: 5.5.5.1 }
+
+l3_links:
+  - hub-sw1:
+      Vlan100: 192.168.110.1/24
+    hub-r1:
+      GigabitEthernet0/2: 192.168.110.2/24
+    hub-r2:
+      GigabitEthernet0/2: 192.168.110.3/24
+  - hub-r1:
+      GigabitEthernet0/1: 192.168.120.1/24
+    hub-r2:
+      GigabitEthernet0/1: 192.168.120.2/24
+
+
+l2_links:
+  - vlan: 110
+    name: transport
+    ports:
+      - { node: hub-sw1, port: "GigabitEthernet0" }
+      - { node: hub-sw1, port: "GigabitEthernet1" }
+
+gre_tunnels: 
+  - { ip_prefix: 192.168.0.0/30, tunnel_id: 100, left: hub-r1, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 2.2.2.2, right: spoke1-r1 }
+  - { ip_prefix: 192.168.0.4/30, tunnel_id: 101, left: hub-r1, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: spoke2-r1 }
+  - { ip_prefix: 192.168.0.8/30, tunnel_id: 102, left: hub-r1, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: spoke3-r1 }
+  - { ip_prefix: 192.168.0.12/30, tunnel_id: 103, left: hub-r1, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: dc-r1 }
+  - { ip_prefix: 192.168.0.16/30, tunnel_id: 104, left: hub-r1, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: dc-r2 }
+
+  - { ip_prefix: 192.168.0.20/30, tunnel_id: 200, left: hub-r2, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 2.2.2.2, right: spoke1-r1 }
+  - { ip_prefix: 192.168.0.24/30, tunnel_id: 201, left: hub-r2, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: spoke2-r1 }
+  - { ip_prefix: 192.168.0.28/30, tunnel_id: 202, left: hub-r2, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: spoke3-r1 }
+  - { ip_prefix: 192.168.0.32/30, tunnel_id: 203, left: hub-r2, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: dc-r1 }
+  - { ip_prefix: 192.168.0.26/30, tunnel_id: 204, left: hub-r2, tunnel_left_ip: 1.1.1.1, tunnel_right_ip: 3.3.3.3, right: dc-r2 }

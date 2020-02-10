@@ -1,0 +1,6 @@
+#
+# Auto-generated hosts file
+#
+{% for node in nodes %}
+{{ node.hostname }}    ansible_host={{ node.mgmt_ip }}    ansible_network_os={{ node.os }}    ansible_user={{ node.user|default("admin") }}    ansible_ssh_pass={{ node.password|default("admin") }}
+{% endfor %}

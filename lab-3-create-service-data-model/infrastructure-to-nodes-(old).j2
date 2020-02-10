@@ -1,0 +1,39 @@
+#
+# Auto-generated nodes file
+#
+nodes:
+{% for node in nodes %}
+  {{ node.hostname }}:
+    mgmt: {{ node.mgmt_ip }}
+{% if node.device_type != "l2_switch" %}
+    loopback: {{ node.rid }}/32
+{% endif %}
+
+    l3_interfaces:
+{%   for link in l3_links %}
+{%     for node_link,int_list in link|dictsort if node_link == node.hostname %}
+{%       for if_name,ip_addr in int_list|dictsort %}
+    - name: {{ if_name }}
+      ip: {{ ip_addr }}
+{%       endfor %}      
+{%     endfor %}
+{%   endfor %}
+{% if node.device_type != "router" %}
+    l2_interfaces:
+{%   for vlan_id in l2_links %}
+{%     for port in vlan_id.ports %}
+      - vlan_id: {{ vlan_id.vlan }}
+        vlan_name: {{ vlan_id.name|default("VLAN_" + vlan_id.vlan|string) }}
+        ports:
+{%       for k,v in port|dictsort if v == node.hostname %}
+          - {{ port.port }}
+      
+{%       endfor %}
+{%     endfor %}
+{%   endfor %}
+{% endif %}
+{% endfor %}
+
+
+
+

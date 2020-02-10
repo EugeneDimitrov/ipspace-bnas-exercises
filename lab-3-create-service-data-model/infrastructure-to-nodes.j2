@@ -1,0 +1,45 @@
+{# Auto-generated nodes file #}
+{% macro gre_tunnel_interface( tunnel_id, ip_addr, tunnel_src, tunnel_dst ) %}
+{ tunnel_id: {{ tunnel_id }}, ip_addr: {{ip_addr}}, tunnel_src: {{ tunnel_src }}, tunnel_dst: {{ tunnel_dst }} }{% endmacro %}
+
+---
+nodes:
+{% for node in nodes %}
+  {{ node.hostname }}:
+    mgmt: {{ node.mgmt_ip }}
+
+    l3_interfaces:
+{%   for link in l3_links %}
+{%     for node_link,int_list in link | dictsort if node_link == node.hostname %}
+{%       for if_name,ip_addr in int_list | dictsort %}
+    - name: {{ if_name }}
+      ip: {{ ip_addr }}
+{%       endfor %}      
+{%     endfor %}
+{%   endfor %}
+
+    
+
+    gre_interfaces:
+{%   for tunn in gre_tunnels %}  
+{%-     if tunn.left == node.hostname %}
+    - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('1'), tunn.tunnel_left_ip, tunn.tunnel_right_ip ) }}
+{%     elif tunn.right == node.hostname %}
+    - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('2'), tunn.tunnel_right_ip, tunn.tunnel_left_ip ) }}
+{%     endif %}
+{%   endfor %}  
+
+    l2_interfaces:
+{%   for vlan_id in l2_links %}
+{%     if vlan_id.ports | selectattr("node", "match", node.hostname) | list | length > 0 %}
+      - vlan_id: {{ vlan_id.vlan }}
+        vlan_name: {{ vlan_id.name | default("VLAN_" + vlan_id.vlan | string) }}
+        ports:
+{%       for port_name in vlan_id.ports | selectattr("node", "match", node.hostname) | map(attribute='port') | list %}
+          - {{ port_name }}
+{%       endfor %}
+
+{%     endif %}
+{%   endfor %}
+
+{% endfor %}
