@@ -1,0 +1,178 @@
+
+---
+nodes:
+  hub-r1:
+    mgmt: 172.16.30.11
+
+    l3_interfaces:
+      - GigabitEthernet0/2: 192.168.110.1/24
+      - GigabitEthernet0/1: 192.168.111.1/30
+      - GigabitEthernet0/0: 101.1.1.2/30
+
+    gre_interfaces:
+      - { tunnel_id: 100, ip_addr: 192.168.101.1/30, tunnel_src: 101.1.1.2, tunnel_dst: 201.1.1.2 }
+      - { tunnel_id: 101, ip_addr: 192.168.101.5/30, tunnel_src: 101.1.1.2, tunnel_dst: 201.2.2.2 }
+      - { tunnel_id: 102, ip_addr: 192.168.101.9/30, tunnel_src: 101.1.1.2, tunnel_dst: 201.3.3.2 }
+      - { tunnel_id: 103, ip_addr: 192.168.101.13/30, tunnel_src: 101.1.1.2, tunnel_dst: 220.1.1.2 }
+      - { tunnel_id: 104, ip_addr: 192.168.101.17/30, tunnel_src: 101.1.1.2, tunnel_dst: 220.2.2.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
+  
+
+  hub-r2:
+    mgmt: 172.16.30.12
+
+    l3_interfaces:
+      - GigabitEthernet0/2: 192.168.110.2/24
+      - GigabitEthernet0/1: 192.168.111.2/30
+      - GigabitEthernet0/0: 102.1.1.2/30
+
+    gre_interfaces:
+      - { tunnel_id: 200, ip_addr: 192.168.102.1/30, tunnel_src: 102.1.1.2, tunnel_dst: 201.1.1.2 }
+      - { tunnel_id: 201, ip_addr: 192.168.102.5/30, tunnel_src: 102.1.1.2, tunnel_dst: 201.2.2.2 }
+      - { tunnel_id: 202, ip_addr: 192.168.102.9/30, tunnel_src: 102.1.1.2, tunnel_dst: 201.3.3.2 }
+      - { tunnel_id: 203, ip_addr: 192.168.102.13/30, tunnel_src: 102.1.1.2, tunnel_dst: 220.1.1.2 }
+      - { tunnel_id: 204, ip_addr: 192.168.102.17/30, tunnel_src: 102.1.1.2, tunnel_dst: 220.2.2.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+      - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1 }
+
+  hub-sw1:
+    mgmt: 172.16.30.13
+
+    l3_interfaces:
+      - Vlan100: 192.168.110.3/24
+
+    gre_interfaces:
+  
+
+    l2_interfaces:
+      - vlan_id: 110
+        vlan_name: transport
+        ports:
+          - GigabitEthernet0
+          - GigabitEthernet1
+
+
+    static_routes:  
+  
+
+  spoke1-r1:
+    mgmt: 172.16.30.14
+
+    l3_interfaces:
+
+    gre_interfaces:
+      - { tunnel_id: 100, ip_addr: 192.168.101.2/30, tunnel_src: 201.1.1.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 200, ip_addr: 192.168.102.2/30, tunnel_src: 201.1.1.2, tunnel_dst: 102.1.1.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  spoke2-r1:
+    mgmt: 172.16.30.15
+
+    l3_interfaces:
+
+    gre_interfaces:
+      - { tunnel_id: 101, ip_addr: 192.168.101.6/30, tunnel_src: 201.2.2.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 201, ip_addr: 192.168.102.6/30, tunnel_src: 201.2.2.2, tunnel_dst: 102.1.1.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  spoke3-r1:
+    mgmt: 172.16.30.16
+
+    l3_interfaces:
+
+    gre_interfaces:
+      - { tunnel_id: 102, ip_addr: 192.168.101.10/30, tunnel_src: 201.3.3.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 202, ip_addr: 192.168.102.10/30, tunnel_src: 201.3.3.2, tunnel_dst: 102.1.1.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  dc-r1:
+    mgmt: 172.16.30.17
+
+    l3_interfaces:
+      - GigabitEthernet6: 10.10.1.1/30
+      - GigabitEthernet4: 10.10.1.13/30
+      - GigabitEthernet2: 10.10.1.17/30
+
+    gre_interfaces:
+      - { tunnel_id: 103, ip_addr: 192.168.101.14/30, tunnel_src: 220.1.1.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 203, ip_addr: 192.168.102.14/30, tunnel_src: 220.1.1.2, tunnel_dst: 102.1.1.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  dc-r2:
+    mgmt: 172.16.30.18
+
+    l3_interfaces:
+      - GigabitEthernet6: 10.10.1.2/30
+      - GigabitEthernet4: 10.10.1.5/30
+      - GigabitEthernet2: 10.10.1.9/30
+
+    gre_interfaces:
+      - { tunnel_id: 104, ip_addr: 192.168.101.18/30, tunnel_src: 220.2.2.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 204, ip_addr: 192.168.102.18/30, tunnel_src: 220.2.2.2, tunnel_dst: 102.1.1.2 }
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  dc-sw1:
+    mgmt: 172.16.30.19
+
+    l3_interfaces:
+      - Ethernet1/3: 10.10.1.10/30
+      - Ethernet1/2: 10.10.1.18/30
+
+    gre_interfaces:
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+
+  dc-sw2:
+    mgmt: 172.16.30.20
+
+    l3_interfaces:
+      - Ethernet1/2: 10.10.1.6/30
+      - Ethernet1/3: 10.10.1.14/30
+
+    gre_interfaces:
+  
+
+    l2_interfaces:
+
+    static_routes:  
+  
+

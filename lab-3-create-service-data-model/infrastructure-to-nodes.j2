@@ -4,42 +4,54 @@
 
 ---
 nodes:
-{% for node in nodes %}
-  {{ node.hostname }}:
-    mgmt: {{ node.mgmt_ip }}
+{% for node_name in nodes %}
+  {{ node_name.hostname }}:
+    mgmt: {{ node_name.mgmt_ip }}
 
     l3_interfaces:
-{%   for link in l3_links %}
-{%     for node_link,int_list in link | dictsort if node_link == node.hostname %}
-{%       for if_name,ip_addr in int_list | dictsort %}
-    - name: {{ if_name }}
-      ip: {{ ip_addr }}
-{%       endfor %}      
+{%   for prefix in l3_links %}
+{%     for node,int in prefix.items() if node != "ip_prefix" %}
+{%       if node == node_name.hostname %}
+      - {{ int }}: {{prefix.ip_prefix | ipaddr(loop.index)}}
+{%       endif %}
+{%     endfor %}
+{%   endfor %}
+{%   for int in wan_links %}
+{%     for node,conn in int|dictsort if node == node_name.hostname %}
+      - {{ conn.port }}: {{ conn.ip }}
 {%     endfor %}
 {%   endfor %}
 
-    
-
     gre_interfaces:
 {%   for tunn in gre_tunnels %}  
-{%-     if tunn.left == node.hostname %}
-    - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('1'), tunn.tunnel_left_ip, tunn.tunnel_right_ip ) }}
-{%     elif tunn.right == node.hostname %}
-    - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('2'), tunn.tunnel_right_ip, tunn.tunnel_left_ip ) }}
+{%-     if tunn.left == node_name.hostname %}
+      - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('1'), tunn.tunnel_left_ip, tunn.tunnel_right_ip ) }}
+{%     elif tunn.right == node_name.hostname %}
+      - {{ gre_tunnel_interface( tunn.tunnel_id, tunn.ip_prefix | ipaddr('2'), tunn.tunnel_right_ip, tunn.tunnel_left_ip ) }}
 {%     endif %}
 {%   endfor %}  
 
     l2_interfaces:
 {%   for vlan_id in l2_links %}
-{%     if vlan_id.ports | selectattr("node", "match", node.hostname) | list | length > 0 %}
+{# Checking vlan id is located on current device #}
+{%     if vlan_id.ports | selectattr("node", "match", node_name.hostname) | list | length > 0 %}
       - vlan_id: {{ vlan_id.vlan }}
         vlan_name: {{ vlan_id.name | default("VLAN_" + vlan_id.vlan | string) }}
         ports:
-{%       for port_name in vlan_id.ports | selectattr("node", "match", node.hostname) | map(attribute='port') | list %}
+{%       for port_name in vlan_id.ports | selectattr("node", "match", node_name.hostname) | map(attribute='port') | list %}
           - {{ port_name }}
 {%       endfor %}
 
 {%     endif %}
 {%   endfor %}
+
+    static_routes:
+{%-   for route in static_routes %}  
+{%      for node,route_list in route|dictsort if node == node_name.hostname %}
+{%        for route_line in route_list %}
+      - { ip_route: {{ route_line.ip_route }}, next_hop: {{ route_line.next_hop }} }
+{%        endfor %}
+{%      endfor %}
+{%    endfor %}
 
 {% endfor %}
