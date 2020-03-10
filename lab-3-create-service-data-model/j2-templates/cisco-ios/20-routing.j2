@@ -1,0 +1,28 @@
+{% set node = nodes[inventory_hostname] %}
+{% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
+router ospf 1
+ router-id {{ node.router_id }}
+!
+interface Loopback0
+ ip address {{ node.router_id }} 255.255.255.255
+ ip ospf 1 area 0
+!
+{%   for interface in node.l3_interfaces %}
+interface {{interface.if_name}}
+ ip ospf 1 area 0
+!
+{%   endfor %}
+{% endif %}
+{% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
+{%   for gre_interface in node.gre_interfaces %}
+interface Tunnel{{gre_interface.tunnel_id}}
+ ip ospf 1 area 0
+ ip ospf network point-to-point
+!
+{%   endfor %}
+{% endif %}
+{% if node.static_routes is defined and node.static_routes and node.static_routes !="" %}
+{%   for route in node.static_routes %}
+ip route {{ route.ip_route | ipaddr("network") }} {{ route.ip_route | ipaddr("netmask") }} {{ route.next_hop }}
+{%   endfor %}
+{% endif %}

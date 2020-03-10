@@ -1,24 +1,27 @@
 {# Auto-generated nodes file #}
 {% macro gre_tunnel_interface( tunnel_id, ip_addr, tunnel_src, tunnel_dst ) %}
-{ tunnel_id: {{ tunnel_id }}, ip_addr: {{ip_addr}}, tunnel_src: {{ tunnel_src }}, tunnel_dst: {{ tunnel_dst }} }{% endmacro %}
+{ tunnel_id: {{ tunnel_id }}, ip_addr: {{ip_addr }}, tunnel_src: {{ tunnel_src }}, tunnel_dst: {{ tunnel_dst }} }{% endmacro %}
 
 ---
 nodes:
 {% for node_name in nodes %}
   {{ node_name.hostname }}:
     mgmt: {{ node_name.mgmt_ip }}
+    router_id: {{ node_name.rid }}
 
     l3_interfaces:
 {%   for prefix in l3_links %}
 {%     for node,int in prefix.items() if node != "ip_prefix" %}
 {%       if node == node_name.hostname %}
-      - {{ int }}: {{prefix.ip_prefix | ipaddr(loop.index)}}
+      - { if_name: {{ int }}, if_ip: {{ prefix.ip_prefix | ipaddr(loop.index) }} }
 {%       endif %}
 {%     endfor %}
 {%   endfor %}
+
+    wan_links:
 {%   for int in wan_links %}
 {%     for node,conn in int|dictsort if node == node_name.hostname %}
-      - {{ conn.port }}: {{ conn.ip }}
+      - { if_name: {{ conn.port }}, if_ip: {{ conn.ip }} }
 {%     endfor %}
 {%   endfor %}
 
@@ -32,18 +35,18 @@ nodes:
 {%   endfor %}  
 
     l2_interfaces:
-{%   for vlan_id in l2_links %}
+{%     for vlan_id in l2_links %}
 {# Checking vlan id is located on current device #}
-{%     if vlan_id.ports | selectattr("node", "match", node_name.hostname) | list | length > 0 %}
+{%       if vlan_id.ports | selectattr("node", "match", node_name.hostname) | list | length > 0 %}
       - vlan_id: {{ vlan_id.vlan }}
         vlan_name: {{ vlan_id.name | default("VLAN_" + vlan_id.vlan | string) }}
         ports:
-{%       for port_name in vlan_id.ports | selectattr("node", "match", node_name.hostname) | map(attribute='port') | list %}
+{%         for port_name in vlan_id.ports | selectattr("node", "match", node_name.hostname) | map(attribute='port') | list %}
           - {{ port_name }}
-{%       endfor %}
+{%         endfor %}
 
-{%     endif %}
-{%   endfor %}
+{%       endif %}
+{%     endfor %}
 
     static_routes:
 {%-   for route in static_routes %}  
