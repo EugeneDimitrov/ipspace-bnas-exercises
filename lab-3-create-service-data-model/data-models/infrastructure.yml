@@ -1,0 +1,121 @@
+#
+# Base infrastructure definition
+#
+---
+common:
+  users:
+    - { username: admin, password: admin }
+    - { username: cisco, password: cisco }
+  
+  ntp:
+    - 172.16.0.1
+    - 172.16.0.2
+
+nodes:
+  - { hostname: hub-r1, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1, device_group: edge_router }
+  - { hostname: hub-r2, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2, device_group: edge_router }
+  - { hostname: hub-sw1, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3, device_group: core_switch }
+  - { hostname: spoke1-r1, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4, device_group: edge_router }
+  - { hostname: spoke2-r1, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5, device_group: edge_router }
+  - { hostname: spoke3-r1, os: ros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, device_group: edge_router }
+  - { hostname: dc-r1, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7, device_group: edge_router }
+  - { hostname: dc-r2, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8, device_group: edge_router }
+  - { hostname: dc-sw1, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, device_group: dc_switch }
+  - { hostname: dc-sw2, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, device_group: dc_switch }
+
+l3_links:
+  - ip_prefix: 192.168.110.0/24
+    hub-r1: GigabitEthernet0/2
+    hub-r2: GigabitEthernet0/2
+    hub-sw1: Vlan110
+    
+  - ip_prefix: 192.168.111.0/30
+    hub-r1: GigabitEthernet0/1
+    hub-r2: GigabitEthernet0/1
+
+  - ip_prefix: 10.10.1.0/30
+    dc-r1: GigabitEthernet6
+    dc-r2: GigabitEthernet6  
+
+  - ip_prefix: 10.10.1.4/30
+    dc-r2: GigabitEthernet4
+    dc-sw2: Ethernet1/2  
+
+  - ip_prefix: 10.10.1.8/30
+    dc-r2: GigabitEthernet2
+    dc-sw1: Ethernet1/3        
+
+  - ip_prefix: 10.10.1.12/30
+    dc-r1: GigabitEthernet4
+    dc-sw2: Ethernet1/3           
+
+  - ip_prefix: 10.10.1.16/30
+    dc-r1: GigabitEthernet2
+    dc-sw1: Ethernet1/2
+
+  - ip_prefix: 192.168.11.0/24
+    spoke1-r1: GigabitEthernet0/1    
+
+  - ip_prefix: 192.168.12.0/24
+    spoke2-r1: GigabitEthernet0/1    
+
+  - ip_prefix: 192.168.13.0/24
+    spoke3-r1: ether2    
+
+
+wan_links:
+  - hub-r1:
+      port: GigabitEthernet0/0
+      ip: 101.1.1.2/30
+      
+  - hub-r2:
+      port: GigabitEthernet0/0
+      ip: 102.1.1.2/30
+
+  - spoke1-r1:
+      port: GigabitEthernet0/0
+      ip: 103.1.1.2/30
+
+  - spoke2-r1:
+      port: GigabitEthernet0/0
+      ip: 104.1.1.2/30
+
+  - spoke3-r1:
+      port: ether1
+      ip: 105.1.1.2/30
+
+l2_links:
+  - vlan: 110
+    name: transport
+    ports:
+      - { node: hub-sw1, port: GigabitEthernet0/0 }
+      - { node: hub-sw1, port: GigabitEthernet0/1 }
+
+gre_tunnels: 
+  - { ip_prefix: 192.168.101.0/30, tunnel_id: 100, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 103.1.1.2, right: spoke1-r1 }
+  - { ip_prefix: 192.168.101.4/30, tunnel_id: 101, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 104.1.1.2, right: spoke2-r1 }
+  - { ip_prefix: 192.168.101.8/30, tunnel_id: 102, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 105.1.1.2, right: spoke3-r1 }
+  - { ip_prefix: 192.168.101.12/30, tunnel_id: 103, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 220.1.1.2, right: dc-r1 }
+  - { ip_prefix: 192.168.101.16/30, tunnel_id: 104, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 220.2.2.2, right: dc-r2 }
+
+  - { ip_prefix: 192.168.102.0/30, tunnel_id: 200, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 103.1.1.2, right: spoke1-r1 }
+  - { ip_prefix: 192.168.102.4/30, tunnel_id: 201, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 104.1.1.2, right: spoke2-r1 }
+  - { ip_prefix: 192.168.102.8/30, tunnel_id: 202, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 105.1.1.2, right: spoke3-r1 }
+  - { ip_prefix: 192.168.102.12/30, tunnel_id: 203, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 220.1.1.2, right: dc-r1 }
+  - { ip_prefix: 192.168.102.16/30, tunnel_id: 204, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 220.2.2.2, right: dc-r2 }
+
+static_routes:
+  - hub-r1:
+      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
+
+  - hub-r2:
+      - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}    
+  
+  - spoke1-r1:
+      - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1}    
+  
+  - spoke2-r1:
+      - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}    
+
+  - spoke3-r1:
+      - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}    

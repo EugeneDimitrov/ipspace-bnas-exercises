@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  
+  tasks:
+  - include_vars: "data-models/infrastructure.yml"
+
+  - name: Create hosts file from infrastructure data model
+    template: src=infrastructure-to-hosts.j2 dest=data-models/hosts
+
+  - name: Create per-node data model from infrastructure data model
+    template: src=infrastructure-to-nodes.j2 dest=data-models/nodes.yml  

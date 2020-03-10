@@ -1,0 +1,17 @@
+{% set node = nodes[inventory_hostname] %}
+{% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
+{%   for interface in node.l3_interfaces %}
+ip address add address={{ interface.if_ip }} interface={{ interface.if_name }}
+{%   endfor %}
+{% endif %}
+{% if node.wan_links is defined and node.wan_links and node.wan_links != "" %}
+{%   for interface in node.wan_links %}
+ip address add address={{ interface.if_ip }} interface={{ interface.if_name }}
+{%   endfor %}
+{% endif %}
+{% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
+{%   for gre_interface in node.gre_interfaces %}
+interface gre add allow-fast-path=no local-address={{ gre_interface.tunnel_src }} mtu=1400 name=Tunnel{{ gre_interface.tunnel_id }} remote-address={{ gre_interface.tunnel_dst }}
+ip address add address={{ gre_interface.ip_addr }} interface=Tunnel{{ gre_interface.tunnel_id }}
+{%   endfor %}
+{% endif %}
