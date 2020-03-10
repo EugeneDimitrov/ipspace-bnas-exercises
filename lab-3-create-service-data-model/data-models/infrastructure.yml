@@ -107,15 +107,12 @@ gre_tunnels:
 static_routes:
   - hub-r1:
       - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
-
+      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
   - hub-r2:
-      - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}    
-  
+      - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}
   - spoke1-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1}    
-  
+      - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1}
   - spoke2-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}    
-
+      - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}
   - spoke3-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}    
+      - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}

@@ -19,6 +19,16 @@
     local_action: file path={{ output_cfg_dir }}/{{ inventory_hostname }} state=directory
     changed_when: false
 
+  - name: Generate base configuration for Cisco devices
+    template: src=j2-templates/cisco-ios/01-base.j2 dest={{ output_cfg_dir }}/{{inventory_hostname}}/01-base.cfg
+    when: ansible_network_os == 'ios' or ansible_network_os == 'nxos'
+    changed_when: false
+
+  - name: Generate base configuration for Mikrotik devices
+    template: src=j2-templates/mikrotik-ros/01-base.j2 dest={{ output_cfg_dir }}/{{inventory_hostname}}/01-base.cfg
+    when: ansible_network_os == 'ros'
+    changed_when: false
+
   - name: Generate interface configuration for Cisco devices
     template: src=j2-templates/cisco-ios/10-interfaces.j2 dest={{ output_cfg_dir }}/{{inventory_hostname}}/10-interfaces.cfg
     when: ansible_network_os == 'ios' or ansible_network_os == 'nxos'

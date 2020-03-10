@@ -9,6 +9,14 @@ nodes:
     mgmt: {{ node_name.mgmt_ip }}
     router_id: {{ node_name.rid }}
 
+    administrators:
+{% for user in common.users %}
+      - {{ user }}
+{% endfor %}    
+    ntp:
+{% for ntp_server in common.ntp %}
+      - {{ ntp_server }}
+{% endfor %}      
     l3_interfaces:
 {%   for prefix in l3_links %}
 {%     for node,int in prefix.items() if node != "ip_prefix" %}
@@ -49,12 +57,11 @@ nodes:
 {%     endfor %}
 
     static_routes:
-{%-   for route in static_routes %}  
+{%   for route in static_routes %}  
 {%      for node,route_list in route|dictsort if node == node_name.hostname %}
 {%        for route_line in route_list %}
       - { ip_route: {{ route_line.ip_route }}, next_hop: {{ route_line.next_hop }} }
 {%        endfor %}
 {%      endfor %}
 {%    endfor %}
-
 {% endfor %}

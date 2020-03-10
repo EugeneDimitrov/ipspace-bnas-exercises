@@ -5,6 +5,14 @@ nodes:
     mgmt: 172.16.30.11
     router_id: 172.16.255.1
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet0/2, if_ip: 192.168.110.1/24 }
       - { if_name: GigabitEthernet0/1, if_ip: 192.168.111.1/30 }
@@ -22,17 +30,26 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
+  
+      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
       - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
   
   
   
   
-
   hub-r2:
     mgmt: 172.16.30.12
     router_id: 172.16.255.2
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet0/2, if_ip: 192.168.110.2/24 }
       - { if_name: GigabitEthernet0/1, if_ip: 192.168.111.2/30 }
@@ -50,17 +67,25 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
+  
   
       - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1 }
   
   
   
-
   hub-sw1:
     mgmt: 172.16.30.13
     router_id: 172.16.255.3
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: Vlan110, if_ip: 192.168.110.3/24 }
 
@@ -77,16 +102,24 @@ nodes:
           - GigabitEthernet0/1
 
 
-    static_routes:  
+    static_routes:
   
   
   
   
-
+  
   spoke1-r1:
     mgmt: 172.16.30.14
     router_id: 172.16.255.4
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet0/1, if_ip: 192.168.11.1/24 }
 
@@ -100,17 +133,25 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
+  
   
   
       - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1 }
   
   
-
   spoke2-r1:
     mgmt: 172.16.30.15
     router_id: 172.16.255.5
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet0/1, if_ip: 192.168.12.1/24 }
 
@@ -124,17 +165,25 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
+  
   
   
   
       - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1 }
   
-
   spoke3-r1:
     mgmt: 172.16.30.16
     router_id: 172.16.255.6
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: ether2, if_ip: 192.168.13.1/24 }
 
@@ -148,17 +197,25 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
+  
   
   
   
   
       - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1 }
-
   dc-r1:
     mgmt: 172.16.30.17
     router_id: 172.16.255.7
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet6, if_ip: 10.10.1.1/30 }
       - { if_name: GigabitEthernet4, if_ip: 10.10.1.13/30 }
@@ -173,16 +230,24 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
   
   
   
   
-
+  
   dc-r2:
     mgmt: 172.16.30.18
     router_id: 172.16.255.8
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: GigabitEthernet6, if_ip: 10.10.1.2/30 }
       - { if_name: GigabitEthernet4, if_ip: 10.10.1.5/30 }
@@ -197,16 +262,24 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
   
   
   
   
-
+  
   dc-sw1:
     mgmt: 172.16.30.19
     router_id: 172.16.255.9
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: Ethernet1/3, if_ip: 10.10.1.10/30 }
       - { if_name: Ethernet1/2, if_ip: 10.10.1.18/30 }
@@ -218,16 +291,24 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
   
   
   
   
-
+  
   dc-sw2:
     mgmt: 172.16.30.20
     router_id: 172.16.255.10
 
+    administrators:
+      - {'username': 'admin', 'password': 'admin'}
+      - {'username': 'cisco', 'password': 'cisco'}
+    
+    ntp:
+      - 172.16.0.1
+      - 172.16.0.2
+      
     l3_interfaces:
       - { if_name: Ethernet1/2, if_ip: 10.10.1.6/30 }
       - { if_name: Ethernet1/3, if_ip: 10.10.1.14/30 }
@@ -239,9 +320,9 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:  
+    static_routes:
   
   
   
   
-
+  
