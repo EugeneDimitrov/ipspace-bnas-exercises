@@ -96,7 +96,7 @@ This playbook generates base configuration files and stores it at generated-cfg/
 This playbook generates svi/l3-subinterface configuration and stores it at generated-cfg/svi-service directory.
 
 ###### Usage
-1. Define your infrastructe using infrastructure.yml data model;
+1. Define your infrastructure using infrastructure.yml data model;
 2. Generate hosts and per-node data model files:
 ```ansible-playbook infrastructure-to-nodes.yml```
 3. Generate device base config using hosts files:
