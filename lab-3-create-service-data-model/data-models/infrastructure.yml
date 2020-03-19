@@ -12,16 +12,16 @@ common:
     - 172.16.0.2
 
 nodes:
-  - { hostname: hub-r1, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1, device_group: edge_router }
-  - { hostname: hub-r2, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2, device_group: edge_router }
-  - { hostname: hub-sw1, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3, device_group: core_switch }
-  - { hostname: spoke1-r1, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4, device_group: edge_router }
-  - { hostname: spoke2-r1, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5, device_group: edge_router }
-  - { hostname: spoke3-r1, os: ros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, device_group: edge_router }
-  - { hostname: dc-r1, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7, device_group: edge_router }
-  - { hostname: dc-r2, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8, device_group: edge_router }
-  - { hostname: dc-sw1, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, device_group: dc_switch }
-  - { hostname: dc-sw2, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, device_group: dc_switch }
+  - { hostname: hub-r1, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1, device_group: hub }
+  - { hostname: hub-r2, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2, device_group: hub }
+  - { hostname: hub-sw1, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3, device_group: hub }
+  - { hostname: spoke1-r1, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4, device_group: spoke }
+  - { hostname: spoke2-r1, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5, device_group: spoke }
+  - { hostname: spoke3-r1, os: ros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, device_group: spoke }
+  - { hostname: dc-r1, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7, device_group: dc }
+  - { hostname: dc-r2, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8, device_group: dc }
+  - { hostname: dc-sw1, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, device_group: dc }
+  - { hostname: dc-sw2, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, device_group: dc }
 
 l3_links:
   - ip_prefix: 192.168.110.0/24
@@ -84,6 +84,14 @@ wan_links:
       port: ether1
       ip: 105.1.1.2/30
 
+  - dc-r1:
+      port: GigabitEthernet1
+      ip: 106.1.1.2/30
+      
+  - dc-r2:
+      port: GigabitEthernet1
+      ip: 107.1.1.2/30      
+
 l2_links:
   - vlan: 110
     name: transport
@@ -97,7 +105,6 @@ gre_tunnels:
   - { ip_prefix: 192.168.101.8/30, tunnel_id: 102, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 105.1.1.2, right: spoke3-r1 }
   - { ip_prefix: 192.168.101.12/30, tunnel_id: 103, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 220.1.1.2, right: dc-r1 }
   - { ip_prefix: 192.168.101.16/30, tunnel_id: 104, left: hub-r1, tunnel_left_ip: 101.1.1.2, tunnel_right_ip: 220.2.2.2, right: dc-r2 }
-
   - { ip_prefix: 192.168.102.0/30, tunnel_id: 200, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 103.1.1.2, right: spoke1-r1 }
   - { ip_prefix: 192.168.102.4/30, tunnel_id: 201, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 104.1.1.2, right: spoke2-r1 }
   - { ip_prefix: 192.168.102.8/30, tunnel_id: 202, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 105.1.1.2, right: spoke3-r1 }
@@ -107,7 +114,6 @@ gre_tunnels:
 static_routes:
   - hub-r1:
       - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
-      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
   - hub-r2:
       - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}
   - spoke1-r1:
@@ -116,3 +122,7 @@ static_routes:
       - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}
   - spoke3-r1:
       - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}
+  - dc-r1:
+      - { ip_route: 0.0.0.0/0, next_hop: 106.1.1.1}
+  - dc-r2:
+      - { ip_route: 0.0.0.0/0, next_hop: 107.1.1.1} 

@@ -59,3 +59,47 @@ Content of this file is provided below:
 | Vlan11          | 11             | 10.100.2.254        | Active        |
 --------------------------------------------------------------------------
 ```
+
+## Folder lab-3-create-service-data-model
+This folder contains creating an infrastructure and service data models exercise solution.
+
+###### Folder structure
+- **data-models**
+Contains several files:
+  - hosts - auto-generated hosts file using nodes data from infrastructure.yml;
+  - infrastructure.yml - contains base infrastructure definition data model;
+  - nodes.yml - auto-generated per-node data model using infrastructure.yml;
+  - svi-service.yml - service data model, which is used for creating user networks on first hop devices.
+
+- **generated-cfgs**
+Contains folders with generated configuration files:
+  - infrastructure - contains base, interface and routing configuration files;
+  - svi-service - contains svi/l3-subinterface configuration files.
+
+- **j2-templates**
+Contains jinja2 configuration and data models templates:
+  - cisco-ios - folder for cisco ios devices;
+  - cisco-nxos - folder for cisco nxos devices;
+  - mikrotik-ros - folder for mikrotik devices;
+  - infrastructure-to-hosts.j2 - used for generating hosts file;
+  - infrastructure-to-nodes.j2 - used for generating per-node data model.
+
+Root folder has multiple playbook files: 
+
+* infrastructure-to-nodes.yml
+This playbook generates hosts file and per-node data model using base infrastructure definition file.
+
+* generate-infrastructure-configs.yml
+This playbook generates base configuration files and stores it at generated-cfg/infrastructure directory.
+
+* generate-svi-service-configs.yml
+This playbook generates svi/l3-subinterface configuration and stores it at generated-cfg/svi-service directory.
+
+###### Usage
+1. Define your infrastructe using infrastructure.yml data model;
+2. Generate hosts and per-node data model files:
+```ansible-playbook infrastructure-to-nodes.yml```
+3. Generate device base config using hosts files:
+```ansible-playbook -i data-models/hosts generate-infrastructure-configs.yml```
+4. Generate svi/l3-subinterface configuration using hosts files:
+```ansible-playbook -i data-models/hosts generate-svi-service-configs.yml```

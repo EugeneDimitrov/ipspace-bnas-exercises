@@ -21,8 +21,8 @@ interface {{ port }}
 {% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
 !
 {%   for interface in node.l3_interfaces %}
-interface {{interface.if_name}}
- ip address {{interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask")}}
+interface {{ interface.if_name }}
+ ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
  no shutdown
 !
 {%   endfor %}
@@ -30,15 +30,15 @@ interface {{interface.if_name}}
 {% if node.wan_links is defined and node.wan_links and node.wan_links != "" %}
 !
 {%   for interface in node.wan_links %}
-interface {{interface.if_name}}
- ip address {{interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask")}}
+interface {{ interface.if_name }}
+ ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
  no shutdown
 !
 {%   endfor %}
 {% endif %}
 {% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
 {%   for gre_interface in node.gre_interfaces %}
-interface Tunnel{{gre_interface.tunnel_id}}
+interface Tunnel{{ gre_interface.tunnel_id }}
  ip address {{ gre_interface.ip_addr | ipaddr("address") }} {{ gre_interface.ip_addr | ipaddr("netmask") }}
  ip mtu 1400
  ip tcp adjust-mss 1360

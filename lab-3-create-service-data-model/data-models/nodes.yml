@@ -1,4 +1,6 @@
-
+#
+# Auto-generated nodes data model
+#
 ---
 nodes:
   hub-r1:
@@ -33,7 +35,8 @@ nodes:
     static_routes:
   
       - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
-      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
+  
+  
   
   
   
@@ -74,6 +77,8 @@ nodes:
   
   
   
+  
+  
   hub-sw1:
     mgmt: 172.16.30.13
     router_id: 172.16.255.3
@@ -103,6 +108,8 @@ nodes:
 
 
     static_routes:
+  
+  
   
   
   
@@ -140,6 +147,8 @@ nodes:
       - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1 }
   
   
+  
+  
   spoke2-r1:
     mgmt: 172.16.30.15
     router_id: 172.16.255.5
@@ -171,6 +180,8 @@ nodes:
   
   
       - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1 }
+  
+  
   
   spoke3-r1:
     mgmt: 172.16.30.16
@@ -204,6 +215,8 @@ nodes:
   
   
       - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1 }
+  
+  
   dc-r1:
     mgmt: 172.16.30.17
     router_id: 172.16.255.7
@@ -222,6 +235,7 @@ nodes:
       - { if_name: GigabitEthernet2, if_ip: 10.10.1.17/30 }
 
     wan_links:
+      - { if_name: GigabitEthernet1, if_ip: 106.1.1.2/30 }
 
     gre_interfaces:
       - { tunnel_id: 103, ip_addr: 192.168.101.14/30, tunnel_src: 220.1.1.2, tunnel_dst: 101.1.1.2 }
@@ -235,6 +249,9 @@ nodes:
   
   
   
+  
+  
+      - { ip_route: 0.0.0.0/0, next_hop: 106.1.1.1 }
   
   dc-r2:
     mgmt: 172.16.30.18
@@ -254,6 +271,7 @@ nodes:
       - { if_name: GigabitEthernet2, if_ip: 10.10.1.9/30 }
 
     wan_links:
+      - { if_name: GigabitEthernet1, if_ip: 107.1.1.2/30 }
 
     gre_interfaces:
       - { tunnel_id: 104, ip_addr: 192.168.101.18/30, tunnel_src: 220.2.2.2, tunnel_dst: 101.1.1.2 }
@@ -268,6 +286,9 @@ nodes:
   
   
   
+  
+  
+      - { ip_route: 0.0.0.0/0, next_hop: 107.1.1.1 }
   dc-sw1:
     mgmt: 172.16.30.19
     router_id: 172.16.255.9
@@ -297,6 +318,8 @@ nodes:
   
   
   
+  
+  
   dc-sw2:
     mgmt: 172.16.30.20
     router_id: 172.16.255.10
@@ -321,6 +344,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
+  
+  
   
   
   

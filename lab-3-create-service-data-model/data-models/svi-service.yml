@@ -1,0 +1,50 @@
+#
+# End user networks definition
+#
+---
+sites:
+  dc:
+    - interface_name: Vlan10
+      vlan_id: 10
+      description: VMs
+      ip_subnet: 10.10.10.0/24
+      nodes:
+        - dc-sw1
+        - dc-sw2
+
+  hub:
+    - interface_name: Vlan112
+      vlan_id: 112 
+      description: Users
+      ip_subnet: 192.168.112.0/24
+      nodes:
+        - hub-sw1
+
+    - interface_name: Vlan113
+      vlan_id: 113    
+      description: VoIP
+      ip_subnet: 192.168.113.0/24
+      nodes:
+        - hub-sw1
+
+  spoke:
+    - interface_name: GigabitEthernet0/1
+      vlan_id: 112
+      description: Users
+      ip_subnet: 192.168.114.0/24
+      nodes:
+        - spoke1-r1
+
+    - interface_name: GigabitEthernet0/1
+      vlan_id: 112
+      description: Users
+      ip_subnet: 192.168.115.0/24
+      nodes:
+        - spoke2-r1
+
+    - interface_name: ether2
+      vlan_id: 112
+      description: Users
+      ip_subnet: 192.168.116.0/24
+      nodes:
+        - spoke3-r1
