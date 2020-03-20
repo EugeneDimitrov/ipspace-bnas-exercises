@@ -18,7 +18,7 @@ routing ospf interface add interface=Tunnel{{ gre_interface.tunnel_id }} network
 {%   endfor %}
 {% endif %}
 
-{% if node.static_routes is defined and node.static_routes and node.static_routes !="" %}
+{% if node.static_routes is defined %}
 {%   for route in node.static_routes %}
 ip route add dst-address={{ route.ip_route }} gateway={{ route.next_hop }}
 {%   endfor %}

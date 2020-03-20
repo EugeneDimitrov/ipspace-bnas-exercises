@@ -5,31 +5,14 @@
 - name: Generate svi service configurations
   hosts: all
   vars:
-    output_cfg_dir: generated-cfgs 
+    cfg_dir: generated-cfgs/svi-service
 
   tasks:
   - include_vars: data-models/svi-service.yml
 
-  - name: "Clear configs directory"
-    local_action: file path={{ output_cfg_dir }}/svi-service state=absent
-    changed_when: false
+  - import_tasks: create-folder-structure.yml
     run_once: true
 
-  - name: "Generate configs folder structure"
-    local_action: file path={{ output_cfg_dir }}/svi-service/{{ inventory_hostname }} state=directory
-    changed_when: false
-
-  - name: Generate svi service configuration for Cisco IOS devices
-    template: src=j2-templates/cisco-ios/svi-service.j2 dest={{ output_cfg_dir }}/svi-service/{{inventory_hostname}}/svi-service.cfg
-    when: ansible_network_os == 'ios'
-    changed_when: false
-
-  - name: Generate svi service configuration for Cisco NXOS devices
-    template: src=j2-templates/cisco-nxos/svi-service.j2 dest={{ output_cfg_dir }}/svi-service/{{inventory_hostname}}/svi-service.cfg
-    when: ansible_network_os == 'nxos'
-    changed_when: false
-
-  - name: Generate svi service configuration for Mikrotik devices
-    template: src=j2-templates/mikrotik-ros/svi-service.j2 dest={{ output_cfg_dir }}/svi-service/{{inventory_hostname}}/svi-service.cfg
-    when: ansible_network_os == 'ros'
+  - name: Generate svi service configuration
+    template: src=j2-templates/{{ ansible_network_os }}/svi-service.j2 dest={{ cfg_dir }}/{{ inventory_hostname }}/svi-service.cfg
     changed_when: false

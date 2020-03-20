@@ -33,14 +33,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
       - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1 }
-  
-  
-  
-  
-  
-  
+
   hub-r2:
     mgmt: 172.16.30.12
     router_id: 172.16.255.2
@@ -71,14 +65,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1 }
-  
-  
-  
-  
-  
+
   hub-sw1:
     mgmt: 172.16.30.13
     router_id: 172.16.255.3
@@ -107,14 +95,6 @@ nodes:
           - GigabitEthernet0/1
 
 
-    static_routes:
-  
-  
-  
-  
-  
-  
-  
   spoke1-r1:
     mgmt: 172.16.30.14
     router_id: 172.16.255.4
@@ -141,14 +121,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1 }
-  
-  
-  
-  
+
   spoke2-r1:
     mgmt: 172.16.30.15
     router_id: 172.16.255.5
@@ -175,14 +149,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1 }
-  
-  
-  
+
   spoke3-r1:
     mgmt: 172.16.30.16
     router_id: 172.16.255.6
@@ -209,14 +177,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
-  
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1 }
-  
-  
+
   dc-r1:
     mgmt: 172.16.30.17
     router_id: 172.16.255.7
@@ -245,14 +207,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
-  
-  
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 106.1.1.1 }
-  
+
   dc-r2:
     mgmt: 172.16.30.18
     router_id: 172.16.255.8
@@ -281,14 +237,8 @@ nodes:
     l2_interfaces:
 
     static_routes:
-  
-  
-  
-  
-  
-  
-  
       - { ip_route: 0.0.0.0/0, next_hop: 107.1.1.1 }
+
   dc-sw1:
     mgmt: 172.16.30.19
     router_id: 172.16.255.9
@@ -312,14 +262,6 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:
-  
-  
-  
-  
-  
-  
-  
   dc-sw2:
     mgmt: 172.16.30.20
     router_id: 172.16.255.10
@@ -343,11 +285,3 @@ nodes:
 
     l2_interfaces:
 
-    static_routes:
-  
-  
-  
-  
-  
-  
-  

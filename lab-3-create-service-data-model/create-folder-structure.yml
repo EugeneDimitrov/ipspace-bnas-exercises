@@ -1,0 +1,10 @@
+---
+- name: Create folder structure
+  shell: |
+    rm -fr {{ cfg_dir }}
+    mkdir -p {{ cfg_dir }}
+    cd {{ cfg_dir }}
+    mkdir {{ groups["all"] | join(" ") }}
+  args:
+    warn: false
+  changed_when: false

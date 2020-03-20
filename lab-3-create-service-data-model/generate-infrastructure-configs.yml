@@ -5,65 +5,26 @@
 - name: Generate configurations
   hosts: all
   vars:
-    output_cfg_dir: generated-cfgs 
+    cfg_dir: generated-cfgs/infrastructure
 
   tasks:
   - include_vars: data-models/nodes.yml
 
-  - name: "Clear configs directory"
-    local_action: file path={{ output_cfg_dir }}/infrastructure state=absent
-    changed_when: false
+  - import_tasks: create-folder-structure.yml
     run_once: true
 
-  - name: "Generate infrastructure configs folder structure"
-    local_action: file path={{ output_cfg_dir }}/infrastructure/{{ inventory_hostname }} state=directory
+  - name: Generate base configuration for devices
+    template: src=j2-templates/{{ ansible_network_os }}/01-base.j2 dest={{ cfg_dir }}/{{inventory_hostname}}/01-base.cfg
     changed_when: false
 
-  - name: Generate base configuration for Cisco IOS devices
-    template: src=j2-templates/cisco-ios/01-base.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/01-base.cfg
-    when: ansible_network_os == 'ios'
+  - name: Generate interface configuration for devices
+    template: src=j2-templates/{{ ansible_network_os }}/10-interfaces.j2 dest={{ cfg_dir }}/{{inventory_hostname}}/10-interfaces.cfg
     changed_when: false
 
-  - name: Generate base configuration for Cisco NXOS devices
-    template: src=j2-templates/cisco-nxos/01-base.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/01-base.cfg
-    when: ansible_network_os == 'nxos'
-    changed_when: false   
-
-  - name: Generate base configuration for Mikrotik devices
-    template: src=j2-templates/mikrotik-ros/01-base.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/01-base.cfg
-    when: ansible_network_os == 'ros'
-    changed_when: false
-
-  - name: Generate interface configuration for Cisco IOS devices
-    template: src=j2-templates/cisco-ios/10-interfaces.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/10-interfaces.cfg
-    when: ansible_network_os == 'ios'
-    changed_when: false
-
-  - name: Generate interface configuration for Cisco NXOS devices
-    template: src=j2-templates/cisco-nxos/10-interfaces.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/10-interfaces.cfg
-    when: ansible_network_os == 'nxos'
-    changed_when: false
-
-  - name: Generate routing configuration for Cisco IOS devices
-    template: src=j2-templates/cisco-ios/20-routing.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/20-routing.cfg
-    when: ansible_network_os == 'ios'    
-    changed_when: false
-
-  - name: Generate routing configuration for Cisco NXOS devices
-    template: src=j2-templates/cisco-nxos/20-routing.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/20-routing.cfg
-    when: ansible_network_os == 'nxos'    
-    changed_when: false
-
-  - name: Generate interface configuration for Mikrotik devices
-    template: src=j2-templates/mikrotik-ros/10-interfaces.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/10-interfaces.cfg
-    when: ansible_network_os == 'ros'
-    changed_when: false
-
-  - name: Generate routing configuration for Mikrotik devices
-    template: src=j2-templates/mikrotik-ros/20-routing.j2 dest={{ output_cfg_dir }}/infrastructure/{{inventory_hostname}}/20-routing.cfg
-    when: ansible_network_os == 'ros'
+  - name: Generate routing configuration for devices
+    template: src=j2-templates/{{ ansible_network_os }}/20-routing.j2 dest={{ cfg_dir }}/{{inventory_hostname}}/20-routing.cfg    
     changed_when: false
 
   - name: Assemble configurations
-    assemble: src={{ output_cfg_dir }}/infrastructure/{{ inventory_hostname }} dest={{ output_cfg_dir }}/infrastructure/{{ inventory_hostname }}.cfg
+    assemble: src={{ cfg_dir }}/{{ inventory_hostname }} dest={{ cfg_dir }}/{{ inventory_hostname }}.cfg
     changed_when: false

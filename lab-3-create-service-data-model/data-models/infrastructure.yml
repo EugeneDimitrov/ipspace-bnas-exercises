@@ -112,17 +112,17 @@ gre_tunnels:
   - { ip_prefix: 192.168.102.16/30, tunnel_id: 204, left: hub-r2, tunnel_left_ip: 102.1.1.2, tunnel_right_ip: 220.2.2.2, right: dc-r2 }
 
 static_routes:
-  - hub-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
-  - hub-r2:
-      - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}
-  - spoke1-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1}
-  - spoke2-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}
-  - spoke3-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}
-  - dc-r1:
-      - { ip_route: 0.0.0.0/0, next_hop: 106.1.1.1}
-  - dc-r2:
-      - { ip_route: 0.0.0.0/0, next_hop: 107.1.1.1} 
+  hub-r1:
+    - { ip_route: 0.0.0.0/0, next_hop: 101.1.1.1}
+  hub-r2:
+    - { ip_route: 0.0.0.0/0, next_hop: 102.1.1.1}
+  spoke1-r1:
+    - { ip_route: 0.0.0.0/0, next_hop: 103.1.1.1}
+  spoke2-r1:
+    - { ip_route: 0.0.0.0/0, next_hop: 104.1.1.1}
+  spoke3-r1:
+    - { ip_route: 0.0.0.0/0, next_hop: 105.1.1.1}
+  dc-r1:
+    - { ip_route: 0.0.0.0/0, next_hop: 106.1.1.1}
+  dc-r2:
+    - { ip_route: 0.0.0.0/0, next_hop: 107.1.1.1} 
