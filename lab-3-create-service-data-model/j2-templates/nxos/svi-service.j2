@@ -7,24 +7,20 @@ interface {{ int.interface_name }}
  description {{ int.description }}
  ip address {{ int.ip_subnet | ipaddr(-4) }}
  ip router ospf 1 area 0.0.0.0
- no shutdown
  hsrp {{ int.vlan_id }}
   preempt
   priority 110
   ip {{ int.ip_subnet | ipaddr("last_usable") }}
-!
 {%         endif %}
 {%         if int.nodes[1] == inventory_hostname %}
 interface {{ int.interface_name }}
  description {{ int.description }}
  ip address {{ int.ip_subnet | ipaddr(-3) }}
  ip router ospf 1 area 0.0.0.0
- no shutdown
  hsrp {{ int.vlan_id }}
   preempt
   priority 100
   ip {{ int.ip_subnet | ipaddr("last_usable") }}
-!
 {%         endif %}
 {%       endif %}
 {%       if int.nodes|length == 1 and int.nodes[0] == inventory_hostname %}
@@ -32,8 +28,6 @@ interface {{ int.interface_name }}
  description {{ int.description }}
  ip address {{ int.ip_subnet | ipaddr(-2) }}
  ip router ospf 1 area 0.0.0.0
- no shutdown
-!
 {%       endif %}
 {%     endfor %}
 {%   endif %}

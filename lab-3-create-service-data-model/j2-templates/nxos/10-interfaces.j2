@@ -1,11 +1,8 @@
 {% set node = nodes[inventory_hostname] %}
 {% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
-!
 {%   for interface in node.l3_interfaces %}
 interface {{interface.if_name}}
  no switchport
  ip address {{ interface.if_ip }}
- no shutdown
-!
 {%   endfor %}
 {% endif %}

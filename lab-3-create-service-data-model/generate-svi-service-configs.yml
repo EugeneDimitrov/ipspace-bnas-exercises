@@ -6,11 +6,15 @@
   hosts: all
   vars:
     cfg_dir: generated-cfgs/svi-service
+    includes_dir: ../includes
 
   tasks:
   - include_vars: data-models/svi-service.yml
 
-  - import_tasks: create-folder-structure.yml
+  - import_tasks: "{{ includes_dir }}/create-folder-structure.yml"
+    vars:
+      dir_name: "{{ cfg_dir }}"
+      create_subfolders: true
     run_once: true
 
   - name: Generate svi service configuration

@@ -1,3 +1,4 @@
+!
 {% for site in sites %}
 {%   if hostvars[inventory_hostname].group_names[0] == site %}
 {%     for int in sites[site] %}
@@ -6,7 +7,6 @@
 interface {{ int.interface_name }}
  ip address {{ int.ip_subnet | ipaddr(-4) }}
  description {{ int.description }}
- no shutdown
  standby {{ int.interface[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
  standby {{ int.interface[4:] }} preempt
  standby {{ int.interface[4:] }} priority 110
@@ -17,7 +17,6 @@ interface {{ int.interface_name }}
 interface {{ int.interface_name }}
  ip address {{ int.ip_subnet | ipaddr(-3) }}
  description {{ int.description }}
- no shutdown
  standby {{ int.interface[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
  standby {{ int.interface[4:] }} priority 100
  ip ospf 1 area 0 
@@ -33,10 +32,9 @@ interface {{ int.interface_name }}
 {%         endif %}
  description {{ int.description }}
  ip address {{ int.ip_subnet | ipaddr("last_usable") }} {{ int.ip_subnet | ipaddr("netmask") }}
- no shutdown
  ip ospf 1 area 0
 !
 {%       endif %}
 {%     endfor %}
 {%   endif %}
-{% endfor %} 
+{% endfor %}

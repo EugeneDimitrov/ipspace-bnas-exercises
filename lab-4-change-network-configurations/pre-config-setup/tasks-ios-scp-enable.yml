@@ -1,0 +1,10 @@
+#
+# This playbook enables SCP on Cisco IOS devices
+#
+---
+- name: "Configure SCP on IOS devices"
+  ios_config:
+    lines:
+      - "ip scp server enable"
+    running_config: "temp-configs/{{inventory_hostname}}.cfg"
+  changed_when: false  

@@ -6,11 +6,15 @@
   hosts: all
   vars:
     cfg_dir: generated-cfgs/infrastructure
+    includes_dir: ../includes
 
   tasks:
   - include_vars: data-models/nodes.yml
 
-  - import_tasks: create-folder-structure.yml
+  - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
+    vars:
+      dir_name: "{{ cfg_dir }}"
+      create_subfolders: true
     run_once: true
 
   - name: Generate base configuration for devices

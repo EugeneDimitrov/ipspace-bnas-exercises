@@ -1,0 +1,28 @@
+---
+- hosts: ios
+
+  tasks:
+  - name: Create temp folder for running configs
+    file: path=temp-configs state=directory
+    changed_when: false
+
+  - name: Execute show run on device
+    ios_command: commands="show running"
+    register: running
+
+  - name: Saving running configs to temp folder
+    copy:
+      content: "{{ running.stdout[0] }}"
+      dest: "temp-configs/{{inventory_hostname}}.cfg"
+    changed_when: false
+
+  - name: Enable SCP on device
+    import_tasks: "tasks-ios-scp-enable.yml"
+
+  - name: Clear banners and enable CLI commands tracking    
+    import_tasks: "tasks-ios-eem-applet.yml"
+
+  - name: Clean temp directory
+    file: path=temp-configs state=absent
+    run_once: true
+    changed_when: false

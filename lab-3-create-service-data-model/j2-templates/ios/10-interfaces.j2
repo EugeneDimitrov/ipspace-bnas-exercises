@@ -1,3 +1,4 @@
+!
 {% set node = nodes[inventory_hostname] %}
 {% if node.l2_interfaces is defined and node.l2_interfaces and node.l2_interfaces != "" %}
 !
@@ -13,7 +14,6 @@ interface {{ port }}
  switchport
  switchport mode access
  switchport access vlan {{ vlan.vlan_id }}
- no shutdown
 !
 {%     endfor %}
 {%   endfor %}
@@ -23,7 +23,6 @@ interface {{ port }}
 {%   for interface in node.l3_interfaces %}
 interface {{ interface.if_name }}
  ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
- no shutdown
 !
 {%   endfor %}
 {% endif %}
@@ -32,7 +31,6 @@ interface {{ interface.if_name }}
 {%   for interface in node.wan_links %}
 interface {{ interface.if_name }}
  ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
- no shutdown
 !
 {%   endfor %}
 {% endif %}

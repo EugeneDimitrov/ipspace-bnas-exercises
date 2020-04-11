@@ -1,14 +1,9 @@
+!
 {% set node = nodes[inventory_hostname] %}
 hostname {{ inventory_hostname }}
 !
-{% if node.administrators is defined and node.administrators and node.administrators != "" %}
-{%   for username in node.administrators %}
-username {{ username.username }} privilege 15 secret {{ username.password }}
-{%   endfor %}
-{% endif %}
-!
 {% if node.ntp is defined and node.ntp and node.ntp != "" %}
 {%   for server_ip in node.ntp %}
-ntp {{ server_ip }}
+ntp server {{ server_ip }}
 {%   endfor %}
 {% endif %}

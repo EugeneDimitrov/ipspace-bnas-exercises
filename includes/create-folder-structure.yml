@@ -1,0 +1,17 @@
+---
+- name: Create base folder structure
+  shell: |
+    rm -fr {{ dir_name }}
+    mkdir -p {{ dir_name }}
+  args:
+    warn: false
+  changed_when: false
+  check_mode: no
+  
+- name: Create sub folder structure using inventory hostnames
+  shell: |
+    cd {{ dir_name }}
+    mkdir {{ groups["all"] | join(" ") }}
+  when: create_subfolders is true
+  changed_when: false
+  check_mode: no
