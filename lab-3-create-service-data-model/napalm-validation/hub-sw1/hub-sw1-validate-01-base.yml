@@ -1,0 +1,7 @@
+---
+- get_facts:
+    hostname: hub-sw1
+- get_ntp_servers:
+    _mode: strict
+    172.16.0.1: {}
+    172.16.0.2: {}

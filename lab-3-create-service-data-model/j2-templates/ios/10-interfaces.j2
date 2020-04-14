@@ -22,6 +22,7 @@ interface {{ port }}
 !
 {%   for interface in node.l3_interfaces %}
 interface {{ interface.if_name }}
+ no shutdown
  ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
 !
 {%   endfor %}
@@ -30,6 +31,7 @@ interface {{ interface.if_name }}
 !
 {%   for interface in node.wan_links %}
 interface {{ interface.if_name }}
+ no shutdown
  ip address {{ interface.if_ip | ipaddr("address")}} {{interface.if_ip | ipaddr("netmask") }}
 !
 {%   endfor %}
@@ -37,6 +39,7 @@ interface {{ interface.if_name }}
 {% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
 {%   for gre_interface in node.gre_interfaces %}
 interface Tunnel{{ gre_interface.tunnel_id }}
+ no shutdown
  ip address {{ gre_interface.ip_addr | ipaddr("address") }} {{ gre_interface.ip_addr | ipaddr("netmask") }}
  ip mtu 1400
  ip tcp adjust-mss 1360

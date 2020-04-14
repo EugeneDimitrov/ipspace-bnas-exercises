@@ -1,6 +1,0 @@
-+vlan 110
-+ name transport
-+interface GigabitEthernet0/0
-+ switchport
-+interface GigabitEthernet0/1
-+ switchport

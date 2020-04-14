@@ -2,9 +2,10 @@
 # Auto-generated hosts file
 #
 {% for node in nodes %}
-[{{ node.device_group }}]
+[{{ node.os }}]
 {{ node.hostname }}    ansible_host={{ node.mgmt_ip }}    ansible_network_os={{ node.os }}    ansible_user={{ node.user|default("admin") }}    ansible_ssh_pass={{ node.password|default("admin") }}
 {% endfor %}
 #
 [all:vars]
+ansible_connection=network_cli
 ansible_python_interpreter="/usr/bin/env python" # if using python venv

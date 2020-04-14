@@ -1,0 +1,11 @@
+{% set node = nodes[inventory_hostname] %}
+---
+- get_facts:
+    hostname: {{ inventory_hostname }}
+- get_ntp_servers:
+    _mode: strict
+{% if node.ntp is defined and node.ntp and node.ntp != "" %}
+{%   for server_ip in node.ntp %}
+    {{ server_ip }}: {}
+{%   endfor %}
+{% endif %}

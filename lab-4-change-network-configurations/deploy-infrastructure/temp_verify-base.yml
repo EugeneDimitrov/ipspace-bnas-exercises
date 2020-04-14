@@ -1,0 +1,53 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Verify base configurations to Cisco IOS managed devices
+  hosts: ios,nxos,!dc-r1,!dc-r2
+  
+  tasks:
+  - include_vars: ../../lab-3-create-service-data-model/data-models/nodes.yml
+
+  - name: "Gather data via show command"
+    ios_command:
+      commands: "sh run | inc ntp"
+    register: command_output
+
+  - assert:
+      that: item in command_output['stdout'][0]
+      msg: "NTP server {{ item }} is missing!"
+    loop: "{{ nodes[inventory_hostname]['ntp'] }}"
+
+  - assert:
+      that: nodes[inventory_hostname]['ntp']|length == command_output['stdout_lines'][0]|length
+      msg: "NTP server number is wrong! It must be: {{nodes[inventory_hostname]['ntp']|length}}, but it is: {{command_output['stdout_lines'][0]|length}}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # - name: "Gather data via show command"
+  #   ios_command:
+  #     commands: "{{ ios_commands }}"
+  #   register: command_output
+
+  # - name: "Apply TextFSM template"
+  #   textfsm_parser:
+  #     file: "../textfsm-templates/cisco_ios_show_version.textfsm"
+  #     content: "{{ command_output.stdout[0] }}"
+  #     name: sh_ver_facts 
+
+  # - copy: content="{{ sh_ver_facts }}" dest=sh_ver_facts.txt

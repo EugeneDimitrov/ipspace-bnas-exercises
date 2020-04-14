@@ -1,26 +1,27 @@
 #
 # Auto-generated hosts file
 #
-[hub]
+[ios]
 hub-r1    ansible_host=172.16.30.11    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[hub]
+[ios]
 hub-r2    ansible_host=172.16.30.12    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[hub]
+[ios]
 hub-sw1    ansible_host=172.16.30.13    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[spoke]
+[ios]
 spoke1-r1    ansible_host=172.16.30.14    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[spoke]
+[ios]
 spoke2-r1    ansible_host=172.16.30.15    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[spoke]
-spoke3-r1    ansible_host=172.16.30.16    ansible_network_os=ros    ansible_user=admin    ansible_ssh_pass=admin
-[dc]
+[routeros]
+spoke3-r1    ansible_host=172.16.30.16    ansible_network_os=routeros    ansible_user=admin    ansible_ssh_pass=admin
+[ios]
 dc-r1    ansible_host=172.16.30.17    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[dc]
+[ios]
 dc-r2    ansible_host=172.16.30.18    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
-[dc]
+[nxos]
 dc-sw1    ansible_host=172.16.30.19    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin
-[dc]
+[nxos]
 dc-sw2    ansible_host=172.16.30.20    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin
 #
 [all:vars]
+ansible_connection=network_cli
 ansible_python_interpreter="/usr/bin/env python" # if using python venv

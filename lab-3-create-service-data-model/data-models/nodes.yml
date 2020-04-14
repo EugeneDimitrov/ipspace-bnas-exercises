@@ -26,8 +26,8 @@ nodes:
       - { tunnel_id: 100, ip_addr: 192.168.101.1/30, tunnel_src: 101.1.1.2, tunnel_dst: 103.1.1.2 }
       - { tunnel_id: 101, ip_addr: 192.168.101.5/30, tunnel_src: 101.1.1.2, tunnel_dst: 104.1.1.2 }
       - { tunnel_id: 102, ip_addr: 192.168.101.9/30, tunnel_src: 101.1.1.2, tunnel_dst: 105.1.1.2 }
-      - { tunnel_id: 103, ip_addr: 192.168.101.13/30, tunnel_src: 101.1.1.2, tunnel_dst: 220.1.1.2 }
-      - { tunnel_id: 104, ip_addr: 192.168.101.17/30, tunnel_src: 101.1.1.2, tunnel_dst: 220.2.2.2 }
+      - { tunnel_id: 103, ip_addr: 192.168.101.13/30, tunnel_src: 101.1.1.2, tunnel_dst: 106.1.1.2 }
+      - { tunnel_id: 104, ip_addr: 192.168.101.17/30, tunnel_src: 101.1.1.2, tunnel_dst: 107.1.1.2 }
   
 
     l2_interfaces:
@@ -58,8 +58,8 @@ nodes:
       - { tunnel_id: 200, ip_addr: 192.168.102.1/30, tunnel_src: 102.1.1.2, tunnel_dst: 103.1.1.2 }
       - { tunnel_id: 201, ip_addr: 192.168.102.5/30, tunnel_src: 102.1.1.2, tunnel_dst: 104.1.1.2 }
       - { tunnel_id: 202, ip_addr: 192.168.102.9/30, tunnel_src: 102.1.1.2, tunnel_dst: 105.1.1.2 }
-      - { tunnel_id: 203, ip_addr: 192.168.102.13/30, tunnel_src: 102.1.1.2, tunnel_dst: 220.1.1.2 }
-      - { tunnel_id: 204, ip_addr: 192.168.102.17/30, tunnel_src: 102.1.1.2, tunnel_dst: 220.2.2.2 }
+      - { tunnel_id: 203, ip_addr: 192.168.102.13/30, tunnel_src: 102.1.1.2, tunnel_dst: 106.1.1.2 }
+      - { tunnel_id: 204, ip_addr: 192.168.102.17/30, tunnel_src: 102.1.1.2, tunnel_dst: 107.1.1.2 }
   
 
     l2_interfaces:
@@ -200,8 +200,8 @@ nodes:
       - { if_name: GigabitEthernet1, if_ip: 106.1.1.2/30 }
 
     gre_interfaces:
-      - { tunnel_id: 103, ip_addr: 192.168.101.14/30, tunnel_src: 220.1.1.2, tunnel_dst: 101.1.1.2 }
-      - { tunnel_id: 203, ip_addr: 192.168.102.14/30, tunnel_src: 220.1.1.2, tunnel_dst: 102.1.1.2 }
+      - { tunnel_id: 103, ip_addr: 192.168.101.14/30, tunnel_src: 106.1.1.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 203, ip_addr: 192.168.102.14/30, tunnel_src: 106.1.1.2, tunnel_dst: 102.1.1.2 }
   
 
     l2_interfaces:
@@ -230,8 +230,8 @@ nodes:
       - { if_name: GigabitEthernet1, if_ip: 107.1.1.2/30 }
 
     gre_interfaces:
-      - { tunnel_id: 104, ip_addr: 192.168.101.18/30, tunnel_src: 220.2.2.2, tunnel_dst: 101.1.1.2 }
-      - { tunnel_id: 204, ip_addr: 192.168.102.18/30, tunnel_src: 220.2.2.2, tunnel_dst: 102.1.1.2 }
+      - { tunnel_id: 104, ip_addr: 192.168.101.18/30, tunnel_src: 107.1.1.2, tunnel_dst: 101.1.1.2 }
+      - { tunnel_id: 204, ip_addr: 192.168.102.18/30, tunnel_src: 107.1.1.2, tunnel_dst: 102.1.1.2 }
   
 
     l2_interfaces:

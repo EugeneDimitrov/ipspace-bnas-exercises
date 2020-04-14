@@ -1,0 +1,11 @@
+{% for site in sites %}
+{%   if hostvars[inventory_hostname].group_names[0] == site %}
+{%     for int in sites[site] %}
+{%       if int.nodes|length == 1 and int.nodes[0] == inventory_hostname %}
+interface vlan add interface={{ int.interface_name }} name={{ int.interface_name }}.{{ int.vlan_id }} vlan-id={{ int.vlan_id }}
+ip address add address={{ int.ip_subnet | ipaddr(-2) }} interface={{ int.interface_name }}.{{ int.vlan_id }} network={{ int.ip_subnet | ipaddr("network") }}
+routing ospf network add network={{ int.ip_subnet | ipaddr("network/prefix") }} area=backbone
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endfor %} 
