@@ -2,8 +2,8 @@
 # Generate devices configs
 # This playbook was created using Ansible 2.9.6
 ---
-- name: Verify connectivity for Cisco IOS and NXOS managed devices
-  hosts: ios,nxos
+- name: Verify connectivity for all devices
+  hosts: all
   vars:
     napalm_validation_dir: ../../lab-3-create-service-data-model/napalm-validation
 
@@ -12,7 +12,7 @@
     napalm_validate:
       hostname={{ ansible_host }}
       username={{ ansible_user }}
-      dev_os={{ ansible_network_os }}
+      dev_os={{ napalm_dev_os }}
       password={{ ansible_ssh_pass }}
       validation_file={{ napalm_validation_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}-validate-99-connectivity.yml
     register: connectivity_report

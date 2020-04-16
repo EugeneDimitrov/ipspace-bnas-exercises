@@ -3,7 +3,7 @@
 #
 {% for node in nodes %}
 [{{ node.os }}]
-{{ node.hostname }}    ansible_host={{ node.mgmt_ip }}    ansible_network_os={{ node.os }}    ansible_user={{ node.user|default("admin") }}    ansible_ssh_pass={{ node.password|default("admin") }}
+{{ node.hostname }}    ansible_host={{ node.mgmt_ip }}    ansible_network_os={{ node.os }}    ansible_user={{ node.user|default("admin") }}    ansible_ssh_pass={{ node.password|default("admin") }}    napalm_dev_os={{ node.napalm_dev_os|default(node.os) }}
 {% endfor %}
 #
 [all:vars]

@@ -2,25 +2,25 @@
 # Auto-generated hosts file
 #
 [ios]
-hub-r1    ansible_host=172.16.30.11    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+hub-r1    ansible_host=172.16.30.11    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [ios]
-hub-r2    ansible_host=172.16.30.12    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+hub-r2    ansible_host=172.16.30.12    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [ios]
-hub-sw1    ansible_host=172.16.30.13    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+hub-sw1    ansible_host=172.16.30.13    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [ios]
-spoke1-r1    ansible_host=172.16.30.14    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+spoke1-r1    ansible_host=172.16.30.14    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [ios]
-spoke2-r1    ansible_host=172.16.30.15    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+spoke2-r1    ansible_host=172.16.30.15    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [routeros]
-spoke3-r1    ansible_host=172.16.30.16    ansible_network_os=routeros    ansible_user=admin    ansible_ssh_pass=admin
+spoke3-r1    ansible_host=172.16.30.16    ansible_network_os=routeros    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ros
 [ios]
-dc-r1    ansible_host=172.16.30.17    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+dc-r1    ansible_host=172.16.30.17    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [ios]
-dc-r2    ansible_host=172.16.30.18    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin
+dc-r2    ansible_host=172.16.30.18    ansible_network_os=ios    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=ios
 [nxos]
-dc-sw1    ansible_host=172.16.30.19    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin
+dc-sw1    ansible_host=172.16.30.19    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=nxos_ssh
 [nxos]
-dc-sw2    ansible_host=172.16.30.20    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin
+dc-sw2    ansible_host=172.16.30.20    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=nxos_ssh
 #
 [all:vars]
 ansible_connection=network_cli
