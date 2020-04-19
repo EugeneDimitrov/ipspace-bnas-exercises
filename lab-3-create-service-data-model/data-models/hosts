@@ -22,6 +22,29 @@ dc-sw1    ansible_host=172.16.30.19    ansible_network_os=nxos    ansible_user=a
 [nxos]
 dc-sw2    ansible_host=172.16.30.20    ansible_network_os=nxos    ansible_user=admin    ansible_ssh_pass=admin    napalm_dev_os=nxos_ssh
 #
+# Sites
+#
+[hub]
+hub-r1
+[hub]
+hub-r2
+[hub]
+hub-sw1
+[spoke]
+spoke1-r1
+[spoke]
+spoke2-r1
+[spoke]
+spoke3-r1
+[dc]
+dc-r1
+[dc]
+dc-r2
+[dc]
+dc-sw1
+[dc]
+dc-sw2
+#
 [all:vars]
 ansible_connection=network_cli
 ansible_python_interpreter="/usr/bin/env python" # if using python venv

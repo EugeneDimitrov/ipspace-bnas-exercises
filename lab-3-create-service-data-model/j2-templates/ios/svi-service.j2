@@ -1,39 +1,53 @@
-!
 {% for site in sites %}
 {%   if hostvars[inventory_hostname].group_names[0] == site %}
 {%     for int in sites[site] %}
 {%       if int.nodes|length == 2 %}
 {%         if int.nodes[0] == inventory_hostname %}
+{%           if int.state == "active" %}
 interface {{ int.interface_name }}
  ip address {{ int.ip_subnet | ipaddr(-4) }}
  description {{ int.description }}
- standby {{ int.interface[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
- standby {{ int.interface[4:] }} preempt
- standby {{ int.interface[4:] }} priority 110
+ standby {{ int.interface_name[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
+ standby {{ int.interface_name[4:] }} preempt
+ standby {{ int.interface_name[4:] }} priority 110
  ip ospf 1 area 0
 !
+{%           endif %}
+{%           if int.state == "remove" %}
+no interface {{ int.interface_name }}
+{%           endif %}
 {%         endif %}
 {%         if int.nodes[1] == inventory_hostname %}
+{%           if int.state == "active" %}
 interface {{ int.interface_name }}
  ip address {{ int.ip_subnet | ipaddr(-3) }}
  description {{ int.description }}
- standby {{ int.interface[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
- standby {{ int.interface[4:] }} priority 100
+ standby {{ int.interface_name[4:] }} ip {{ int.ip_subnet | ipaddr("last_usable") }}
+ standby {{ int.interface_name[4:] }} priority 100
  ip ospf 1 area 0 
 !
+{%           endif %}
+{%           if int.state == "remove" %}
+no interface {{ int.interface_name }}
+{%           endif %}
 {%         endif %}
 {%       endif %}
 {%       if int.nodes|length == 1 and int.nodes[0] == inventory_hostname %}
-{%         if hostvars[inventory_hostname].group_names[0] == "spoke" %}
+{%         if int.state == "active" %}
+{%           if hostvars[inventory_hostname].group_names[0] == "spoke" %}
 interface {{ int.interface_name }}.{{ int.vlan_id }}
  encapsulation dot1q {{ int.vlan_id }}
-{%         else %}
+{%           else %}
 interface {{ int.interface_name }}
-{%         endif %}
+{%           endif %}
  description {{ int.description }}
  ip address {{ int.ip_subnet | ipaddr("last_usable") }} {{ int.ip_subnet | ipaddr("netmask") }}
  ip ospf 1 area 0
 !
+{%         endif %}
+{%         if int.state == "remove" %}
+no interface {{ int.interface_name }}
+{%         endif %}
 {%       endif %}
 {%     endfor %}
 {%   endif %}

@@ -1,0 +1,23 @@
+---
+- get_interfaces:
+{% for site in sites %}
+{%   if site in hostvars[inventory_hostname].group_names %}
+{%     for int in sites[site] %}
+{%       for node in int.nodes %}
+{%         if node == inventory_hostname %}
+{%           if int.state == "active" %}
+{%             if "spoke" in hostvars[inventory_hostname].group_names %}
+    {{ int.interface_name }}.{{ int.vlan_id }}:
+      is_enabled: true
+      is_up: true
+{%             else %}
+    {{ int.interface_name }}:
+      is_enabled: true
+      is_up: true    
+{%             endif %}     
+{%           endif %}
+{%         endif %}
+{%       endfor %}
+{%     endfor %}
+{%   endif %}
+{% endfor %}

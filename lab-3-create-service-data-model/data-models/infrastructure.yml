@@ -12,16 +12,16 @@ common:
     - 172.16.0.2
 
 nodes:
-  - { hostname: hub-r1, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1 }
-  - { hostname: hub-r2, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2 }
-  - { hostname: hub-sw1, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3 }
-  - { hostname: spoke1-r1, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4 }
-  - { hostname: spoke2-r1, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5 }
-  - { hostname: spoke3-r1, os: routeros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, napalm_dev_os: ros }
-  - { hostname: dc-r1, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7 }
-  - { hostname: dc-r2, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8 }
-  - { hostname: dc-sw1, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, napalm_dev_os: nxos_ssh }
-  - { hostname: dc-sw2, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, napalm_dev_os: nxos_ssh }
+  - { hostname: hub-r1, site: hub, os: ios, mgmt_ip: 172.16.30.11, rid: 172.16.255.1 }
+  - { hostname: hub-r2, site: hub, os: ios, mgmt_ip: 172.16.30.12, rid: 172.16.255.2 }
+  - { hostname: hub-sw1, site: hub, os: ios, mgmt_ip: 172.16.30.13, rid: 172.16.255.3 }
+  - { hostname: spoke1-r1, site: spoke, os: ios, mgmt_ip: 172.16.30.14, rid: 172.16.255.4 }
+  - { hostname: spoke2-r1, site: spoke, os: ios, mgmt_ip: 172.16.30.15, rid: 172.16.255.5 }
+  - { hostname: spoke3-r1, site: spoke, os: routeros, mgmt_ip: 172.16.30.16, rid: 172.16.255.6, napalm_dev_os: ros }
+  - { hostname: dc-r1, site: dc, os: ios, mgmt_ip: 172.16.30.17, rid: 172.16.255.7 }
+  - { hostname: dc-r2, site: dc, os: ios, mgmt_ip: 172.16.30.18, rid: 172.16.255.8 }
+  - { hostname: dc-sw1, site: dc, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, napalm_dev_os: nxos_ssh }
+  - { hostname: dc-sw2, site: dc, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, napalm_dev_os: nxos_ssh }
 
 l3_links:
   - ip_prefix: 192.168.110.0/24

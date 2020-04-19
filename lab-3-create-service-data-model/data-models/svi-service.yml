@@ -8,6 +8,16 @@ sites:
       vlan_id: 10
       description: VMs
       ip_subnet: 10.10.10.0/24
+      state: active
+      nodes:
+        - dc-sw1
+        - dc-sw2
+
+    - interface_name: Vlan11
+      vlan_id: 11
+      description: SAN
+      ip_subnet: 10.10.11.0/24
+      state: active
       nodes:
         - dc-sw1
         - dc-sw2
@@ -17,6 +27,7 @@ sites:
       vlan_id: 112 
       description: Users
       ip_subnet: 192.168.112.0/24
+      state: remove
       nodes:
         - hub-sw1
 
@@ -24,6 +35,7 @@ sites:
       vlan_id: 113    
       description: VoIP
       ip_subnet: 192.168.113.0/24
+      state: active
       nodes:
         - hub-sw1
 
@@ -32,6 +44,7 @@ sites:
       vlan_id: 112
       description: Users
       ip_subnet: 192.168.114.0/24
+      state: active
       nodes:
         - spoke1-r1
 
@@ -39,6 +52,7 @@ sites:
       vlan_id: 112
       description: Users
       ip_subnet: 192.168.115.0/24
+      state: remove
       nodes:
         - spoke2-r1
 
@@ -46,5 +60,6 @@ sites:
       vlan_id: 112
       description: Users
       ip_subnet: 192.168.116.0/24
+      state: active
       nodes:
         - spoke3-r1
