@@ -1,6 +1,13 @@
 ---
 - get_interfaces:
-    ether2.112:
-      is_enabled: true
-      is_up: true
-     
+    ether2:
+      is_enabled: false
+      is_up: false
+
+- get_interfaces_ip:
+    ether2:
+      ipv4:
+        192.168.116.254:
+          prefix_length: 24
+
+

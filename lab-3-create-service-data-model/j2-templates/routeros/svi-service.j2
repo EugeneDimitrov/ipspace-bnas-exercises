@@ -1,11 +1,9 @@
-{% for site in sites %}
-{%   if hostvars[inventory_hostname].group_names[0] == site %}
-{%     for int in sites[site] %}
-{%       if int.nodes|length == 1 and int.nodes[0] == inventory_hostname %}
-interface vlan add interface={{ int.interface_name }} name={{ int.interface_name }}.{{ int.vlan_id }} vlan-id={{ int.vlan_id }}
-ip address add address={{ int.ip_subnet | ipaddr(-2) }} interface={{ int.interface_name }}.{{ int.vlan_id }} network={{ int.ip_subnet | ipaddr("network") }}
-routing ospf network add network={{ int.ip_subnet | ipaddr("network/prefix") }} area=backbone
-{%       endif %}
-{%     endfor %}
-{%   endif %}
-{% endfor %} 
+{% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
+{%   for svi in svi_list %}
+{%     if svi["state"] != "remove" %}
+interface vlan add {% if svi["state"] == "shutdown" %}disabled=yes{% endif %} interface={{ svi["interface_name"] }} name={{ svi["interface_name"] }}.{{ svi["vlan_id"] }} vlan-id={{ svi["vlan_id"] }}
+ip address add address={{ svi["ip_address"] }} interface={{ svi["interface_name"] }}.{{ svi["vlan_id"] }} network={{ svi["ip_address"] | ipaddr("network") }}
+routing ospf network add network={{ svi["ip_address"] | ipaddr("network/prefix") }} area=backbone
+{%     endif %}
+{%   endfor %}
+{% endfor%}

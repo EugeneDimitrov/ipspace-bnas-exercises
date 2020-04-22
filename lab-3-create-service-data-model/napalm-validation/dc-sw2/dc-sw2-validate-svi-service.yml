@@ -2,9 +2,19 @@
 - get_interfaces:
     Vlan10:
       is_enabled: true
-      is_up: true    
-     
+      is_up: true
     Vlan11:
       is_enabled: true
-      is_up: true    
-     
+      is_up: true
+
+- get_interfaces_ip:
+    Vlan10:
+      ipv4:
+        10.10.10.253:
+          prefix_length: 24
+    Vlan11:
+      ipv4:
+        10.10.11.253:
+          prefix_length: 24
+
+

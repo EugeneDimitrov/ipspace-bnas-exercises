@@ -9,6 +9,7 @@
     Tunnel200:
       is_enabled: true
       is_up: true    
+
 - get_interfaces_ip:
     GigabitEthernet0/1:
       ipv4:

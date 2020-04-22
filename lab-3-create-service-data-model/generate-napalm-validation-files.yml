@@ -9,8 +9,10 @@
     includes_dir: ../includes
 
   tasks:
-  - include_vars: data-models/nodes.yml
-  - include_vars: data-models/svi-service.yml
+  - include_vars: data-models/nodes-infrastructure.yml
+    run_once: true
+  - include_vars: data-models/nodes-svi-service.yml
+    run_once: true
   
   - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
     vars:
@@ -30,3 +32,4 @@
 
   - template: src=j2-templates/napalm-validate-svi-service.j2 dest={{ napalm_validation_dir }}/{{inventory_hostname}}/{{inventory_hostname}}-validate-svi-service.yml  
     changed_when: false
+    when: inventory_hostname in groups['svi_service']

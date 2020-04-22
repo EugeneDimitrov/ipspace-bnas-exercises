@@ -13,6 +13,15 @@
 {{ node.hostname }}
 {% endfor %}
 #
+# SVI Service
+#
+[svi_service]
+{% for node in svi_service %}
+{{ node }}
+{% endfor %}
+#
+#
+#
 [all:vars]
 ansible_connection=network_cli
 ansible_python_interpreter="/usr/bin/env python" # if using python venv

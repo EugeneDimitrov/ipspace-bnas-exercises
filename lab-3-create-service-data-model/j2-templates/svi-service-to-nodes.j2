@@ -1,0 +1,41 @@
+#
+# Auto-generated SVI service nodes data model
+# State values can be: active, shutdown or remove
+---
+svi_service:
+{% for hostname in groups['svi_service'] %}
+  {{ hostname }}:
+{%   for site, svi_list in sites.items() %}
+{%     for svi in svi_list %}
+{%       for node in svi['nodes'] if node==hostname %}
+    - interface_name: {{ svi['interface_name'] }}
+      vlan_id: {{ svi['vlan_id'] }}
+      description: {{ svi['description'] }}
+      state: {{ svi['state'] }}
+{%         if svi['nodes'] | length == 2 %}
+{%           if svi['nodes'][0] == hostname %}
+      ip_address: {{ svi['ip_subnet'] | ipaddr(-4) }}
+{%           endif %}
+{%           if svi['nodes'][1] == hostname %}
+      ip_address: {{ svi['ip_subnet'] | ipaddr(-3) }}
+{%           endif %}
+      hsrp: 
+        id: {{ svi['vlan_id'] }}
+        ip: {{ svi['ip_subnet'] | ipaddr("last_usable") }}    
+{%           if svi['nodes'][0] == hostname %}
+        priority: 120
+{%           endif %}
+{%           if svi['nodes'][1] == hostname %}
+        priority: 110
+{%           endif %}
+
+{%         else %}
+      ip_address: {{ svi['ip_subnet'] | ipaddr(-2) }}
+{%         endif %}
+
+{%       endfor %}
+{%     endfor %}
+{%   endfor %}
+
+{%-endfor %}
+

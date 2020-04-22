@@ -21,6 +21,7 @@
     Tunnel204:
       is_enabled: true
       is_up: true    
+
 - get_interfaces_ip:
     GigabitEthernet0/2:
       ipv4:

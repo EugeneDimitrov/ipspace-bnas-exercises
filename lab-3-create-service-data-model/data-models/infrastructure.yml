@@ -23,6 +23,14 @@ nodes:
   - { hostname: dc-sw1, site: dc, os: nxos, mgmt_ip: 172.16.30.19, rid: 172.16.255.9, napalm_dev_os: nxos_ssh }
   - { hostname: dc-sw2, site: dc, os: nxos, mgmt_ip: 172.16.30.20, rid: 172.16.255.10, napalm_dev_os: nxos_ssh }
 
+svi_service:
+  - hub-sw1
+  - spoke1-r1
+  - spoke2-r1
+  - spoke3-r1
+  - dc-sw1
+  - dc-sw2
+
 l3_links:
   - ip_prefix: 192.168.110.0/24
     hub-r1: GigabitEthernet0/2

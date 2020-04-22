@@ -11,4 +11,4 @@
     template: src=j2-templates/infrastructure-to-hosts.j2 dest=data-models/hosts
 
   - name: Create per-node data model from infrastructure data model
-    template: src=j2-templates/infrastructure-to-nodes.j2 dest=data-models/nodes.yml
+    template: src=j2-templates/infrastructure-to-nodes.j2 dest=data-models/nodes-infrastructure.yml

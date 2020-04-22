@@ -1,23 +1,30 @@
 ---
 - get_interfaces:
-{% for site in sites %}
-{%   if site in hostvars[inventory_hostname].group_names %}
-{%     for int in sites[site] %}
-{%       for node in int.nodes %}
-{%         if node == inventory_hostname %}
-{%           if int.state == "active" %}
-{%             if "spoke" in hostvars[inventory_hostname].group_names %}
-    {{ int.interface_name }}.{{ int.vlan_id }}:
+{% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
+{%   for svi in svi_list %}
+{%     if svi["state"] != "remove" %}
+    {{ svi["interface_name"] }}:
+{%       if svi["state"] == "active" %}
       is_enabled: true
       is_up: true
-{%             else %}
-    {{ int.interface_name }}:
-      is_enabled: true
-      is_up: true    
-{%             endif %}     
-{%           endif %}
-{%         endif %}
-{%       endfor %}
-{%     endfor %}
-{%   endif %}
+{%       else %}
+      is_enabled: false
+      is_up: false
+{%       endif %}
+{%     endif %}
+{%   endfor %}
 {% endfor %}
+
+- get_interfaces_ip:
+{% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
+{%   for svi in svi_list %}
+{%     if svi["state"] != "remove" %}
+    {{ svi["interface_name"] }}:
+      ipv4:
+        {{ svi["ip_address"] | ipaddr("address") }}:
+          prefix_length: {{ svi["ip_address"] | ipaddr("prefix") }}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+
+

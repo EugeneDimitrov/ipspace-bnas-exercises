@@ -15,6 +15,7 @@
       is_up: true    
 {%   endfor %}
 {% endif %}
+
 - get_interfaces_ip:
 {% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
 {%   for interface in node.l3_interfaces %}

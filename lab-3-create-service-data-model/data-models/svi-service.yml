@@ -1,6 +1,6 @@
 #
 # End user networks definition
-#
+# State values can be: active, shutdown or remove
 ---
 sites:
   dc:
@@ -52,9 +52,9 @@ sites:
       vlan_id: 112
       description: Users
       ip_subnet: 192.168.115.0/24
-      state: remove
+      state: active
       nodes:
-        - spoke2-r1
+        - spoke2-r1 
 
     - interface_name: ether2
       vlan_id: 112

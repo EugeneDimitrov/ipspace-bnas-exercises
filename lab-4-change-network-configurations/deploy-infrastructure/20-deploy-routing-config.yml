@@ -20,7 +20,7 @@
     napalm_install_config:
       hostname={{ ansible_host }}
       username={{ ansible_user }}
-      dev_os={{ ansible_network_os }}
+      dev_os={{ napalm_dev_os }}
       password={{ ansible_ssh_pass }}
       config_file={{ cfg_dir }}/{{ inventory_hostname }}/20-routing.cfg
       commit_changes={{ commit_changes | default(False) }}

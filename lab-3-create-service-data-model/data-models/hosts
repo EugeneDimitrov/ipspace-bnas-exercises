@@ -45,6 +45,18 @@ dc-sw1
 [dc]
 dc-sw2
 #
+# SVI Service
+#
+[svi_service]
+hub-sw1
+spoke1-r1
+spoke2-r1
+spoke3-r1
+dc-sw1
+dc-sw2
+#
+#
+#
 [all:vars]
 ansible_connection=network_cli
 ansible_python_interpreter="/usr/bin/env python" # if using python venv
