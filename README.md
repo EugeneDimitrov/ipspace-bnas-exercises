@@ -225,6 +225,7 @@ This playbook validates deployed svi service configuration.
 ```ansible-playbook -i ../../lab-3-create-service-data-model/data-models/hosts validate-svi-service-config.yml```
 
 - clean-svi-service-config.yml
+
 This playbook remove interface configuration from device if it has "remove" state in SVI service data model
 
 **j2-templates**
