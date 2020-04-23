@@ -3,7 +3,7 @@
 # This playbook was created using Ansible 2.9.6
 ---
 - name: Clear removed SVI configurations from Cisco IOS and NXOS managed devices
-  hosts: ios,nxos,!routeros
+  hosts: ios,nxos,routeros
   vars:
     tmp_cfg_dir: .cfg
 
@@ -31,11 +31,13 @@
 
   - ios_command: commands="show running-config"
     register: running
+    when: ansible_network_os != 'routeros'
 
   - copy: 
       content: "{{ running.stdout[0] }}"
       dest: "{{ tmp_cfg_dir }}/{{ inventory_hostname }}.cfg"
     changed_when: false
+    when: ansible_network_os != 'routeros'
 
   - ios_config:   
       lines: 
@@ -51,8 +53,13 @@
     with_items: "{{ remove_int_list }}"
     when: remove_int_list | length > 0 and ansible_network_os == 'nxos'
 
+  - routeros_command:   
+      commands:
+      - "/interface vlan remove {{ item }}"
+    with_items: "{{ remove_int_list }}"
+    when: remove_int_list | length > 0 and ansible_network_os == 'routeros'
+
   - name: Clean temp dir
     file: path={{ tmp_cfg_dir }} state=absent
     run_once: true
     changed_when: false
-

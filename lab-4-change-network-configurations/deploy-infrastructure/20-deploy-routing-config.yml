@@ -32,3 +32,14 @@
     shell: find {{ diff_dir }} -size 0 -delete
     run_once: true
     changed_when: false
+
+- name: Apply interface configurations to Mikrotik managed devices
+  hosts: routeros
+  vars:
+    cfg_dir: ../../lab-3-create-service-data-model/generated-cfgs/infrastructure
+
+  tasks:
+  - name: Deploy infrastructure config to Mikrotik devices
+    routeros_command:
+      commands: "{{ item }}"
+    with_lines: cat {{ cfg_dir }}/{{ inventory_hostname }}/20-routing.cfg

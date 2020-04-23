@@ -1,11 +1,9 @@
 {% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
 {%   for svi in svi_list %}
 {%     if svi["state"] != "remove" %}
+interface {{ svi["interface_name"]  }}
 {%       if hostname in groups["spoke"] %}
-interface {{ svi["interface_name"]  }}.{{ svi["vlan_id"] }}
  encapsulation dot1q {{ svi["vlan_id"] }}
-{%       else %}
-interface {{ svi["interface_name"] }}
 {%       endif %}
 {%       if svi["state"] == "active" %}
  no shutdown
