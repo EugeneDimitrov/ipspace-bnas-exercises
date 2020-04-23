@@ -1,0 +1,63 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Verify routing configurations for Cisco IOS and NXOS managed devices
+  hosts: ios,nxos
+  vars:
+    ios_commands:
+      - show ip ospf neighbor
+  roles:
+    - ansible-network.network-engine
+
+  tasks:
+    - name: "Gather data via show command"
+      ios_command:
+        commands: "{{ ios_commands }}"
+      register: command_output
+
+    - name: "Apply TextFSM template to command output"
+      textfsm_parser:
+        file: "../textfsm-templates/cisco_ios_show_ip_ospf_neighbor.textfsm"
+        content: "{{ command_output.stdout[0] }}"
+        name: ospf_nei_facts
+      when: ansible_network_os == 'ios'
+
+    - assert:
+        that: "'FULL' in item['STATE']"
+        msg: "OSPF peer {{ item['NEIGHBOR_ID'] }} is not in FULL state!"
+      loop: "{{ hostvars[inventory_hostname]['ospf_nei_facts'] }}"
+      when: ansible_network_os == 'ios'
+
+    - name: "Apply TextFSM template to command output"
+      textfsm_parser:
+        file: "../textfsm-templates/cisco_nxos_show_ip_ospf_neighbor.textfsm"
+        content: "{{ command_output.stdout[0] }}"
+        name: ospf_nei_facts
+      when: ansible_network_os == 'nxos'
+
+    - assert:
+        that: "'FULL' in item['STATE']"
+        msg: "OSPF peer {{ item['NEIGHBOR_IPADDR'] }} is not in FULL state!"
+      loop: "{{ hostvars[inventory_hostname]['ospf_nei_facts'] }}"
+      when: ansible_network_os == 'nxos'
+    
+- name: Verify routing configurations for Mikrotik managed devices
+  hosts: routeros
+  
+  tasks:
+    - name: "Gather data via show command"
+      routeros_command:
+        commands: "routing ospf neighbor print brief"
+      register: command_output
+
+    - name: "Apply TextFSM template to command output"
+      textfsm_parser:
+        file: "../textfsm-templates/mikrotik_routeros_routing_ospf_neighbor_print_brief.textfsm"
+        content: "{{ command_output.stdout[0] }}"
+        name: ospf_nei_facts
+
+    - assert:
+        that: "'Full' in item['STATE']"
+        msg: "OSPF peer {{ item['NEIGHBOR_ID'] }} is not in FULL state!"
+      loop: "{{ hostvars[inventory_hostname]['ospf_nei_facts'] }}"

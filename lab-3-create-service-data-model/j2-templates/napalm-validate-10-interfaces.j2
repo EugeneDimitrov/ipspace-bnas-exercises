@@ -1,0 +1,35 @@
+{% set node = nodes[inventory_hostname] %}
+---
+- get_interfaces:
+{% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
+{%   for interface in node.l3_interfaces %}
+    {{ interface.if_name }}:
+      is_enabled: true
+      is_up: true
+{%   endfor %}
+{% endif %}
+{% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
+{%   for gre_interface in node.gre_interfaces %}
+    Tunnel{{ gre_interface.tunnel_id }}:
+      is_enabled: true
+      is_up: true    
+{%   endfor %}
+{% endif %}
+
+- get_interfaces_ip:
+{% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
+{%   for interface in node.l3_interfaces %}
+    {{ interface.if_name }}:
+      ipv4:
+        {{ interface.if_ip | ipaddr("address") }}:
+          prefix_length: {{interface.if_ip | ipaddr("prefix") }}
+{%   endfor %}
+{% endif %}
+{% if node.gre_interfaces is defined and node.gre_interfaces and node.gre_interfaces !="" %}
+{%   for gre_interface in node.gre_interfaces %}
+    Tunnel{{ gre_interface.tunnel_id }}:
+      ipv4:
+        {{ gre_interface.ip_addr | ipaddr("address") }}:
+          prefix_length: {{ gre_interface.ip_addr | ipaddr("prefix") }}
+{%   endfor %}
+{% endif %}

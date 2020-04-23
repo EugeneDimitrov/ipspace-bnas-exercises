@@ -1,12 +1,12 @@
 {% set node = nodes[inventory_hostname] %}
 {% if node.l3_interfaces is defined and node.l3_interfaces and node.l3_interfaces != "" %}
 router ospf 1
- router-id {{ node.router_id }}
-interface Loopback0
- ip address {{ node.router_id }}/32
- ip router ospf 1 area 0.0.0.0
+  router-id {{ node.router_id }}
+interface loopback0
+  ip address {{ node.router_id }}/32
+  ip router ospf 1 area 0.0.0.0
 {%   for interface in node.l3_interfaces %}
 interface {{interface.if_name}}
- ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0.0.0.0
 {%   endfor %}
 {% endif %}

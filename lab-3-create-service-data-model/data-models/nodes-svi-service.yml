@@ -1,0 +1,97 @@
+#
+# Auto-generated SVI service nodes data model
+# State values can be: active, shutdown or remove
+---
+svi_service:
+  hub-sw1:
+    - interface_name: Vlan112
+      vlan_id: 112
+      description: Users
+      state: remove
+      ip_address: 192.168.112.254/24
+
+    - interface_name: Vlan113
+      vlan_id: 113
+      description: VoIP
+      state: active
+      ip_address: 192.168.113.254/24
+
+  spoke1-r1:
+    - interface_name: GigabitEthernet0/1.114
+      vlan_id: 114
+      description: Users
+      state: active
+      ip_address: 192.168.114.254/24
+
+  spoke2-r1:
+    - interface_name: GigabitEthernet0/1.115
+      vlan_id: 115
+      description: Users
+      state: active
+      ip_address: 192.168.115.254/24
+
+    - interface_name: GigabitEthernet0/1.116
+      vlan_id: 116
+      description: Users
+      state: shutdown
+      ip_address: 192.168.116.254/24
+
+  spoke3-r1:
+    - interface_name: ether2.117
+      vlan_id: 117
+      description: Users
+      state: active
+      ip_address: 192.168.116.254/24
+
+    - interface_name: ether2.118
+      vlan_id: 118
+      description: Data
+      state: remove
+      ip_address: 192.168.117.254/24
+
+  dc-sw1:
+    - interface_name: Vlan10
+      vlan_id: 10
+      description: VMs
+      state: active
+      ip_address: 10.10.10.252/24
+      hsrp: 
+        id: 10
+        ip: 10.10.10.254    
+        priority: 120
+
+
+    - interface_name: Vlan11
+      vlan_id: 11
+      description: SAN
+      state: active
+      ip_address: 10.10.11.252/24
+      hsrp: 
+        id: 11
+        ip: 10.10.11.254    
+        priority: 120
+
+
+  dc-sw2:
+    - interface_name: Vlan10
+      vlan_id: 10
+      description: VMs
+      state: active
+      ip_address: 10.10.10.253/24
+      hsrp: 
+        id: 10
+        ip: 10.10.10.254    
+        priority: 110
+
+
+    - interface_name: Vlan11
+      vlan_id: 11
+      description: SAN
+      state: active
+      ip_address: 10.10.11.253/24
+      hsrp: 
+        id: 11
+        ip: 10.10.11.254    
+        priority: 110
+
+

@@ -1,0 +1,35 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Generate NAPALM validation files
+  hosts: all
+  vars:
+    napalm_validation_dir: napalm-validation
+    includes_dir: ../includes
+
+  tasks:
+  - include_vars: data-models/nodes-infrastructure.yml
+    run_once: true
+  - include_vars: data-models/nodes-svi-service.yml
+    run_once: true
+  
+  - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
+    vars:
+      dir_name: "{{ napalm_validation_dir }}"
+      create_subfolders: true
+    run_once: true
+
+  - name: Generate NAPALM validate data model files
+    template: src=j2-templates/napalm-validate-01-base.j2 dest={{ napalm_validation_dir }}/{{inventory_hostname}}/{{inventory_hostname}}-validate-01-base.yml
+    changed_when: false
+
+  - template: src=j2-templates/napalm-validate-10-interfaces.j2 dest={{ napalm_validation_dir }}/{{inventory_hostname}}/{{inventory_hostname}}-validate-10-interfaces.yml  
+    changed_when: false
+
+  - template: src=j2-templates/napalm-validate-99-connectivity.j2 dest={{ napalm_validation_dir }}/{{inventory_hostname}}/{{inventory_hostname}}-validate-99-connectivity.yml  
+    changed_when: false
+
+  - template: src=j2-templates/napalm-validate-svi-service.j2 dest={{ napalm_validation_dir }}/{{inventory_hostname}}/{{inventory_hostname}}-validate-svi-service.yml  
+    changed_when: false
+    when: inventory_hostname in groups['svi_service']

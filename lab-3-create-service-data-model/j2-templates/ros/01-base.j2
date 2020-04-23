@@ -1,8 +1,0 @@
-{% set node = nodes[inventory_hostname] %}
-system identity set name={{ inventory_hostname }}
-
-{% if node.ntp is defined and node.ntp and node.ntp != "" %}
-{%   if node.ntp | length >= 2 %}
-system ntp client set enabled=yes primary-ntp={{ node.ntp[0] }} secondary-ntp={{ node.ntp[1] }} 
-{%   endif %}
-{% endif %}

@@ -1,0 +1,65 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Clear removed SVI configurations from Cisco IOS and NXOS managed devices
+  hosts: ios,nxos,routeros
+  vars:
+    tmp_cfg_dir: .cfg
+
+  tasks:
+  - include_vars: ../../lab-3-create-service-data-model/data-models/nodes-svi-service.yml
+    run_once: true
+
+  - set_fact: candidate_int_list="{{ svi_service[inventory_hostname] | selectattr("state", "equalto", "remove") | map(attribute='interface_name') | list }}"
+
+  - napalm_get_facts:
+      hostname: '{{ ansible_host }}'
+      username: '{{ ansible_user }}'
+      dev_os: '{{ napalm_dev_os }}'
+      password: '{{ ansible_ssh_pass }}'
+      filter: ['facts']
+    register: result
+
+  - set_fact: current_int_list="{{ result['ansible_facts']['napalm_interface_list'] }}"
+  - set_fact: remove_int_list="{{ current_int_list|intersect(candidate_int_list) }}"
+
+  - name: Create temp dir for Cisco configs
+    file: path={{ tmp_cfg_dir }} state=directory
+    run_once: true
+    changed_when: false
+
+  - ios_command: commands="show running-config"
+    register: running
+    when: ansible_network_os != 'routeros'
+
+  - copy: 
+      content: "{{ running.stdout[0] }}"
+      dest: "{{ tmp_cfg_dir }}/{{ inventory_hostname }}.cfg"
+    changed_when: false
+    when: ansible_network_os != 'routeros'
+
+  - ios_config:   
+      lines: 
+      - "no interface {{ item }}"
+      running_config: "{{ tmp_cfg_dir }}/{{ inventory_hostname }}.cfg"
+    with_items: "{{ remove_int_list }}"
+    when: remove_int_list | length > 0 and ansible_network_os == 'ios'
+
+  - nxos_config:   
+      lines: 
+      - "no interface {{ item }}"
+      running_config: "{{ tmp_cfg_dir }}/{{ inventory_hostname }}.cfg"
+    with_items: "{{ remove_int_list }}"
+    when: remove_int_list | length > 0 and ansible_network_os == 'nxos'
+
+  - routeros_command:   
+      commands:
+      - "/interface vlan remove {{ item }}"
+    with_items: "{{ remove_int_list }}"
+    when: remove_int_list | length > 0 and ansible_network_os == 'routeros'
+
+  - name: Clean temp dir
+    file: path={{ tmp_cfg_dir }} state=absent
+    run_once: true
+    changed_when: false

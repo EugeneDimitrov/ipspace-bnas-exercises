@@ -1,0 +1,11 @@
+{% set node = nodes[inventory_hostname] %}
+---
+{% for node_router_id in nodes %}
+- ping:
+    _kwargs:
+      destination: {{ nodes[node_router_id]['router_id'] }}
+      source: {{ node.router_id }}
+    success:
+      packet_loss: 0
+    _mode: strict
+{% endfor %}

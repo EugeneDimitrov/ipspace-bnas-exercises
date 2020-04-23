@@ -1,0 +1,39 @@
+---
+- get_interfaces:
+    GigabitEthernet6:
+      is_enabled: true
+      is_up: true
+    GigabitEthernet4:
+      is_enabled: true
+      is_up: true
+    GigabitEthernet2:
+      is_enabled: true
+      is_up: true
+    Tunnel103:
+      is_enabled: true
+      is_up: true    
+    Tunnel203:
+      is_enabled: true
+      is_up: true    
+
+- get_interfaces_ip:
+    GigabitEthernet6:
+      ipv4:
+        10.10.1.1:
+          prefix_length: 30
+    GigabitEthernet4:
+      ipv4:
+        10.10.1.13:
+          prefix_length: 30
+    GigabitEthernet2:
+      ipv4:
+        10.10.1.17:
+          prefix_length: 30
+    Tunnel103:
+      ipv4:
+        192.168.101.14:
+          prefix_length: 30
+    Tunnel203:
+      ipv4:
+        192.168.102.14:
+          prefix_length: 30

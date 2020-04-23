@@ -1,0 +1,7 @@
+Value ID (\d+)
+Value NEIGHBOR_ID (\d+.\d+.\d+.\d+)
+Value ADDRESS (\d+.\d+.\d+.\d+)
+Value STATE (\S+)
+
+Start
+  ^ ${ID}\s+${NEIGHBOR_ID}\s+${ADDRESS}\s+${STATE} -> Record

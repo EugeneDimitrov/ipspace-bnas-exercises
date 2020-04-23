@@ -1,0 +1,45 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Apply routing configurations to Cisco IOS and NXOS managed devices
+  hosts: ios,nxos
+  vars:
+    includes_dir: ../../includes
+    diff_dir: cfg-diffs
+    cfg_dir: ../../lab-3-create-service-data-model/generated-cfgs/infrastructure
+  
+  tasks:
+  - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
+    vars:
+      dir_name: "{{ diff_dir }}"
+      create_subfolders: False
+    run_once: true
+
+  - name: Calculate config diff on Cisco IOS and NXOS devices using NAPALM
+    napalm_install_config:
+      hostname={{ ansible_host }}
+      username={{ ansible_user }}
+      dev_os={{ napalm_dev_os }}
+      password={{ ansible_ssh_pass }}
+      config_file={{ cfg_dir }}/{{ inventory_hostname }}/20-routing.cfg
+      commit_changes={{ commit_changes | default(False) }}
+      replace_config=False
+      get_diffs=True
+      diff_file={{ diff_dir }}/{{ inventory_hostname }}-20-routing.diff
+
+  - name: Delete empty config diff files 
+    shell: find {{ diff_dir }} -size 0 -delete
+    run_once: true
+    changed_when: false
+
+- name: Apply interface configurations to Mikrotik managed devices
+  hosts: routeros
+  vars:
+    cfg_dir: ../../lab-3-create-service-data-model/generated-cfgs/infrastructure
+
+  tasks:
+  - name: Deploy infrastructure config to Mikrotik devices
+    routeros_command:
+      commands: "{{ item }}"
+    with_lines: cat {{ cfg_dir }}/{{ inventory_hostname }}/20-routing.cfg

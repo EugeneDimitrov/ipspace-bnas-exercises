@@ -1,0 +1,13 @@
+---
+- get_interfaces:
+    Vlan113:
+      is_enabled: true
+      is_up: true
+
+- get_interfaces_ip:
+    Vlan113:
+      ipv4:
+        192.168.113.254:
+          prefix_length: 24
+
+

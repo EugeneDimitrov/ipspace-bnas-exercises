@@ -1,0 +1,3 @@
+{% for line in hostvars[inventory_hostname]['config_changed']['updates'] %}
+{{ line }}
+{% endfor %}

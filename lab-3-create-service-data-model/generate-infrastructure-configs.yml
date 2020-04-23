@@ -9,7 +9,8 @@
     includes_dir: ../includes
 
   tasks:
-  - include_vars: data-models/nodes.yml
+  - include_vars: data-models/nodes-infrastructure.yml
+    run_once: true
 
   - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
     vars:

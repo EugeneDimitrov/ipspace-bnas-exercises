@@ -1,0 +1,25 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Verify base configurations for all devices
+  hosts: all
+  vars:
+    napalm_validation_dir: ../../lab-3-create-service-data-model/napalm-validation
+
+  tasks:
+  - name: Get validation report to base configuration
+    napalm_validate:
+      hostname={{ ansible_host }}
+      username={{ ansible_user }}
+      dev_os={{ napalm_dev_os }}
+      password={{ ansible_ssh_pass }}
+      validation_file={{ napalm_validation_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}-validate-01-base.yml
+    register: base_report
+
+  - debug:
+      var: base_report.compliance_report
+    
+  
+
+    

@@ -1,0 +1,11 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- hosts: localhost
+  
+  tasks:
+  - include_vars: "data-models/svi-service.yml"
+
+  - name: Create per-node data model from svi service data model
+    template: src=j2-templates/svi-service-to-nodes.j2 dest=data-models/nodes-svi-service.yml

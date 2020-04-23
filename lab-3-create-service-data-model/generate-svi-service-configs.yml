@@ -3,13 +3,14 @@
 # This playbook was created using Ansible 2.7.14
 ---
 - name: Generate svi service configurations
-  hosts: all
+  hosts: svi_service
   vars:
     cfg_dir: generated-cfgs/svi-service
     includes_dir: ../includes
 
   tasks:
-  - include_vars: data-models/svi-service.yml
+  - include_vars: data-models/nodes-svi-service.yml
+    run_once: true
 
   - import_tasks: "{{ includes_dir }}/create-folder-structure.yml"
     vars:

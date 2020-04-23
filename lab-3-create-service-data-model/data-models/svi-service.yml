@@ -1,6 +1,6 @@
 #
 # End user networks definition
-#
+# State values can be: active, shutdown or remove
 ---
 sites:
   dc:
@@ -8,6 +8,16 @@ sites:
       vlan_id: 10
       description: VMs
       ip_subnet: 10.10.10.0/24
+      state: active
+      nodes:
+        - dc-sw1
+        - dc-sw2
+
+    - interface_name: Vlan11
+      vlan_id: 11
+      description: SAN
+      ip_subnet: 10.10.11.0/24
+      state: active
       nodes:
         - dc-sw1
         - dc-sw2
@@ -17,6 +27,7 @@ sites:
       vlan_id: 112 
       description: Users
       ip_subnet: 192.168.112.0/24
+      state: remove
       nodes:
         - hub-sw1
 
@@ -24,27 +35,47 @@ sites:
       vlan_id: 113    
       description: VoIP
       ip_subnet: 192.168.113.0/24
+      state: active
       nodes:
         - hub-sw1
 
   spoke:
-    - interface_name: GigabitEthernet0/1
-      vlan_id: 112
+    - interface_name: GigabitEthernet0/1.114
+      vlan_id: 114
       description: Users
       ip_subnet: 192.168.114.0/24
+      state: active
       nodes:
         - spoke1-r1
 
-    - interface_name: GigabitEthernet0/1
-      vlan_id: 112
+    - interface_name: GigabitEthernet0/1.115
+      vlan_id: 115
       description: Users
       ip_subnet: 192.168.115.0/24
+      state: active
       nodes:
-        - spoke2-r1
+        - spoke2-r1 
 
-    - interface_name: ether2
-      vlan_id: 112
+    - interface_name: GigabitEthernet0/1.116
+      vlan_id: 116
       description: Users
       ip_subnet: 192.168.116.0/24
+      state: shutdown
+      nodes:
+        - spoke2-r1 
+
+    - interface_name: ether2.117
+      vlan_id: 117
+      description: Users
+      ip_subnet: 192.168.116.0/24
+      state: active
+      nodes:
+        - spoke3-r1
+
+    - interface_name: ether2.118
+      vlan_id: 118
+      description: Data
+      ip_subnet: 192.168.117.0/24
+      state: remove
       nodes:
         - spoke3-r1

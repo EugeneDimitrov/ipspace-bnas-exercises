@@ -1,0 +1,9 @@
+{% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
+{%   for svi in svi_list %}
+{%     if svi["state"] != "remove" %}
+interface vlan add {% if svi["state"] == "shutdown" %}disabled=yes{% endif %} interface={{ svi["interface_name"].split(".")[0] }} name={{ svi["interface_name"] }} vlan-id={{ svi["vlan_id"] }}
+ip address add address={{ svi["ip_address"] }} interface={{ svi["interface_name"] }} network={{ svi["ip_address"] | ipaddr("network") }}
+routing ospf network add network={{ svi["ip_address"] | ipaddr("network/prefix") }} area=backbone
+{%     endif %}
+{%   endfor %}
+{% endfor%}

@@ -1,34 +1,22 @@
-{% for site in sites %}
-{%   if hostvars[inventory_hostname].group_names[0] == site %}
-{%     for int in sites[site] %}
-{%       if int.nodes|length == 2 %}
-{%         if int.nodes[0] == inventory_hostname %}
-interface {{ int.interface_name }}
- description {{ int.description }}
- ip address {{ int.ip_subnet | ipaddr(-4) }}
- ip router ospf 1 area 0.0.0.0
- hsrp {{ int.vlan_id }}
-  preempt
-  priority 110
-  ip {{ int.ip_subnet | ipaddr("last_usable") }}
-{%         endif %}
-{%         if int.nodes[1] == inventory_hostname %}
-interface {{ int.interface_name }}
- description {{ int.description }}
- ip address {{ int.ip_subnet | ipaddr(-3) }}
- ip router ospf 1 area 0.0.0.0
- hsrp {{ int.vlan_id }}
-  preempt
-  priority 100
-  ip {{ int.ip_subnet | ipaddr("last_usable") }}
-{%         endif %}
+{% for hostname, svi_list in svi_service.items() if hostname == inventory_hostname %}
+{%   for svi in svi_list %}
+{%     if svi["state"] != "remove" %}
+interface {{ svi["interface_name"]  }}
+{%       if svi["state"] == "active" %}
+  no shutdown
+{%       else %}
+  shutdown
 {%       endif %}
-{%       if int.nodes|length == 1 and int.nodes[0] == inventory_hostname %}
-interface {{ int.interface_name }}
- description {{ int.description }}
- ip address {{ int.ip_subnet | ipaddr(-2) }}
- ip router ospf 1 area 0.0.0.0
+  description {{ svi["description"] }}
+  ip address {{ svi["ip_address"] }}
+  ip router ospf 1 area 0.0.0.0
+{%       if svi["hsrp"] is defined %}
+  hsrp {{ svi["hsrp"]["id"] }}
+    preempt delay minimum 0 reload 0 sync 0
+    priority {{ svi["hsrp"]["priority"] }}
+    ip {{ svi["hsrp"]["ip"] }}
 {%       endif %}
-{%     endfor %}
-{%   endif %}
-{% endfor %} 
+!
+{%     endif %}
+{%   endfor %}
+{% endfor %}
