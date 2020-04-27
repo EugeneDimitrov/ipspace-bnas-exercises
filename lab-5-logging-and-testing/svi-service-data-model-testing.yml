@@ -1,0 +1,12 @@
+- hosts: localhost
+  tasks:
+  - name: Checking data model using yamllint
+    shell: "yamllint {{ data_model_path | default('../lab-3-create-service-data-model/data-models/nodes-svi-service.yml') }}"
+
+- hosts: svi_service
+  tasks:
+  - name: Load SVI service data model vars
+    include_vars: "{{ data_model_path | default('../lab-3-create-service-data-model/data-models/nodes-svi-service.yml') }}"
+
+  - name: SVI service to nodes data model checks
+    include: includes/svi-service-to-nodes-predeploy-checks.yml

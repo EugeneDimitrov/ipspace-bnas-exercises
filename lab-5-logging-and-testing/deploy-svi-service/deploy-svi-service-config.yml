@@ -1,0 +1,62 @@
+#
+# Generate devices configs
+# This playbook was created using Ansible 2.9.6
+---
+- name: Apply SVI service configurations to Cisco IOS and NXOS managed devices
+  hosts: svi_service,!routeros
+  vars:
+    includes_dir: ../../includes
+    debug_dir: debug
+    cfg_dir: ../../lab-3-create-service-data-model/generated-cfgs/svi-service
+  
+  tasks:
+  - include_tasks: "{{ includes_dir }}/create-folder-structure.yml"
+    vars:
+      dir_name: "{{ debug_dir }}"
+      create_subfolders: False
+    run_once: true
+    when: debug is defined
+
+  - name: Get current time
+    command: "date +%Y-%m-%d-%H-%M-%S"
+    register: current_timestamp
+    run_once: true
+    when: debug is defined
+
+  - name: Set time fact for debugging
+    set_fact:
+      timestamp: "{{ current_timestamp.stdout }}"
+    run_once: true
+    when: debug is defined
+
+  - name: Configure Cisco IOS device
+    ios_config:
+      src: "{{ cfg_dir }}/{{ inventory_hostname }}/svi-service.cfg"
+      defaults: yes
+    register: ios_config_diff
+    check_mode: "{{ not commit_changes | default(false) }}"
+    when: ansible_network_os == 'ios'
+
+  - name: Register ios_config_diff variable
+    set_fact:
+      config_changed: "{{ ios_config_diff }}"
+    when: ansible_network_os == 'ios'
+
+  - name: Configure Cisco NXOS device
+    nxos_config:
+      src: "{{ cfg_dir }}/{{ inventory_hostname }}/svi-service.cfg"
+      defaults: yes
+    register: nxos_config_diff
+    check_mode: "{{ not commit_changes | default(false) }}"
+    when: ansible_network_os == 'nxos'
+
+  - name: Register nxos_config_diff variable
+    set_fact:
+      config_changed: "{{ nxos_config_diff }}"
+    when: ansible_network_os == 'nxos'
+
+  - name: Generate debug logs
+    template: src=../j2-templates/10-interfaces-config-diff.j2 dest={{ debug_dir }}/{{inventory_hostname}}-{{ timestamp }}.log
+    when: hostvars[inventory_hostname]['config_changed']['changed'] == true and debug is defined
+    check_mode: false
+    changed_when: false

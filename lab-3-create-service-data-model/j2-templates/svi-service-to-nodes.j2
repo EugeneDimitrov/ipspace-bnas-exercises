@@ -19,23 +19,19 @@ svi_service:
 {%           if svi['nodes'][1] == hostname %}
       ip_address: {{ svi['ip_subnet'] | ipaddr(-3) }}
 {%           endif %}
-      hsrp: 
+      hsrp:
         id: {{ svi['vlan_id'] }}
-        ip: {{ svi['ip_subnet'] | ipaddr("last_usable") }}    
+        ip: {{ svi['ip_subnet'] | ipaddr("last_usable") }}
 {%           if svi['nodes'][0] == hostname %}
         priority: 120
 {%           endif %}
 {%           if svi['nodes'][1] == hostname %}
         priority: 110
 {%           endif %}
-
 {%         else %}
       ip_address: {{ svi['ip_subnet'] | ipaddr(-2) }}
 {%         endif %}
-
 {%       endfor %}
 {%     endfor %}
 {%   endfor %}
-
-{%-endfor %}
-
+{% endfor %}

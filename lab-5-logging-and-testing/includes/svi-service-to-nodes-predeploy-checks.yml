@@ -1,0 +1,24 @@
+- name: Checking nodes-svi-service hosts is present in svi_service inventory group
+  assert:
+    that: "item.key in groups['svi_service']"
+    msg: "Hostname {{ item.key }} is not in svi_service inventory group!"
+  loop: "{{ lookup('dict', svi_service) }}"
+  run_once: true
+
+- name: Checking that vlan_id in valid range - from 10 to 200
+  assert:
+    that: "item['vlan_id'] in range(10, 201)"
+    msg: "Vlan id for hostname {{ inventory_hostname }} is not in valid range from 10 to 200!"
+  loop: "{{ svi_service[inventory_hostname] }}"
+
+- name: Validate interface state
+  assert:
+    that: "item['state'] == 'active' or item['state'] == 'shutdown' or item['state'] == 'remove'"
+    msg: "Hostname's {{ inventory_hostname }} interface {{ item['interface_name'] }} has invalid state!"
+  loop: "{{ svi_service[inventory_hostname] }}"
+
+- name: Validate IP address format
+  assert:
+    that: "{{ item['ip_address'] | ipaddr != false }}"
+    msg: "Hostname's {{ inventory_hostname }} IP address {{ item['ip_address'] }} is invalid!"
+  loop: "{{ svi_service[inventory_hostname] }}"

@@ -33,7 +33,8 @@ svi_service:
       ip_address: 192.168.116.254/24
   spoke3-r1:
     - interface_name: ether2.117
-      vlan_id: 117
+# Invalid vlan id
+      vlan_id: 201
       description: Users
       state: active
       ip_address: 192.168.116.254/24

@@ -2,13 +2,16 @@
 Hands-On Exercise Solutions for Building Network Automation Solutions Course
 
 ## Installation
+
 You may need to use special Ansible inv setting using setup_ansible_env.sh script.
 Also some playbooks require addition plugin such as NAPALM. You must install it at "plugins" folder.
 
 ## Folder lab-1-create-virtual-lab
+
 This folder contains virtual lab description
 
 ## Folder lab-2-summary-report
+
 This folder contains report exercise solution, which consists of multiple playbook files:
 
 * 01-get-interfaces-status.yml
@@ -61,59 +64,62 @@ Content of this file is provided below:
 ```
 
 ## Folder lab-3-create-service-data-model
+
 This folder contains creating an infrastructure and service data models exercise solution.
 
 ###### Folder structure
-**data-models**
+
+* data-models
 
 Contains several files:
-  - hosts - auto-generated hosts file using nodes data from infrastructure.yml;
-  - infrastructure.yml - contains base infrastructure definition data model;
-  - svi-service.yml - service data model, which is used for creating user networks on first hop devices.
-  - nodes-infrastructure.yml - auto-generated per-node data model using infrastructure.yml;
-  - nodes-svi-service.yml - auto-generated per-node data model using svi-service.yml;
+  * hosts - auto-generated hosts file using nodes data from infrastructure.yml;
+  * infrastructure.yml - contains base infrastructure definition data model;
+  * svi-service.yml - service data model, which is used for creating user networks on first hop devices.
+  * nodes-infrastructure.yml - auto-generated per-node data model using infrastructure.yml;
+  * nodes-svi-service.yml - auto-generated per-node data model using svi-service.yml;
 
-**generated-cfgs**
+* generated-cfgs
 
 Contains folders with generated configuration files:
-  - infrastructure - contains base, interface and routing configuration files;
-  - svi-service - contains svi/l3-subinterface configuration files.
+  * infrastructure - contains base, interface and routing configuration files;
+  * svi-service - contains svi/l3-subinterface configuration files.
 
-**j2-templates**
+* j2-templates
 
 Contains jinja2 configuration and data models templates:
-  - ios - folder for cisco ios devices;
-  - nxos - folder for cisco nxos devices;
-  - routeros - folder for mikrotik devices;
-  - infrastructure-to-hosts.j2 - used for generating hosts file;
-  - infrastructure-to-nodes.j2 - used for generating infrastructure per-node data model;
-  - svi-service-to-nodes.j2 - used for generating svi-service per-node data model;
-  - napalm-validate-01-base.j2 - used for generating napalm_validate files against base configuration;
-  - napalm-validate-10-interfaces.j2 - used for generating napalm_validate files against interfaces configuration;
-  - napalm-validate-99-connectivity.j2 - used for generating napalm_validate files for ICMP connectivity checks;
-  - napalm-validate-svi-service.j2 - used for generating napalm_validate files against SVI interfaces configuration.
+  * ios - folder for cisco ios devices;
+  * nxos - folder for cisco nxos devices;
+  * routeros - folder for mikrotik devices;
+  * infrastructure-to-hosts.j2 - used for generating hosts file;
+  * infrastructure-to-nodes.j2 - used for generating infrastructure per-node data model;
+  * svi-service-to-nodes.j2 - used for generating svi-service per-node data model;
+  * napalm-validate-01-base.j2 - used for generating napalm_validate files against base configuration;
+  * napalm-validate-10-interfaces.j2 - used for generating napalm_validate files against interfaces configuration;
+  * napalm-validate-99-connectivity.j2 - used for generating napalm_validate files for ICMP connectivity checks;
+  * napalm-validate-svi-service.j2 - used for generating napalm_validate files against SVI interfaces configuration.
 
-**napalm-validation**
+* napalm-validation
 
 Contains napalm validation data models.
 
 Root folder has multiple playbook files: 
-- generate-napalm-validation-files.yml
-This playbook generates napalm_validate files data model.
+  * generate-napalm-validation-files.yml
+    This playbook generates napalm_validate files data model.
 
-- infrastructure-to-nodes.yml
-This playbook generates hosts file and per-node data model using base infrastructure definition file.
+  * infrastructure-to-nodes.yml
+    This playbook generates hosts file and per-node data model using base infrastructure definition file.
 
-- svi-service-to-nodes.yml
-This playbook generates svi/l3-subinterface per-node data model using svi-service definition file.
+  * svi-service-to-nodes.yml
+    This playbook generates svi/l3-subinterface per-node data model using svi-service definition file.
 
-- generate-infrastructure-configs.yml
-This playbook generates base configuration files and stores it at generated-cfg/infrastructure directory.
+  * generate-infrastructure-configs.yml
+    This playbook generates base configuration files and stores it at generated-cfg/infrastructure directory.
 
-- generate-svi-service-configs.yml
-This playbook generates svi/l3-subinterface configuration and stores it at generated-cfg/svi-service directory.
+  * generate-svi-service-configs.yml
+    This playbook generates svi/l3-subinterface configuration and stores it at generated-cfg/svi-service directory.
 
 ###### Usage
+
 1. Define your infrastructure using infrastructure.yml data model;
 2. Define your SVI/l3-subinterface service using svi-service.yml data model;
 3. Generate hosts and per-node data model files:
@@ -143,15 +149,17 @@ This folder contains changing network configurations exercise solution.
 
 ###### Folder structure
 
-**deploy-infrastructure**
+* deploy-infrastructure
 
 Contains multiple playbook files: 
-- 01-deploy-base-config.yml
-This playbook deploys base configuration to device.
-- 10-deploy-interfaces-config.yml
-This playbook deploys interface configuration to device.
-- 20-deploy-routing-config.yml
-This playbook deploys routing configuration to device.
+  * 01-deploy-base-config.yml
+  This playbook deploys base configuration to device.
+  
+  * 10-deploy-interfaces-config.yml
+  This playbook deploys interface configuration to device.
+
+  * 20-deploy-routing-config.yml
+  This playbook deploys routing configuration to device.
 
 ###### Usage
 
@@ -197,11 +205,11 @@ spoke2-r1                  : ok=2    changed=0    unreachable=0    failed=0    s
 spoke3-r1                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-**deploy-svi-service**
+* deploy-svi-service
 
 Contains multiple playbook files: 
 
-- deploy-svi-service-config.yml
+  * deploy-svi-service-config.yml
 
 ###### Usage
 
@@ -216,7 +224,7 @@ It calculates diffs between desired configs generated by data models and actual 
 
 NOTE: Mikrotik device doesn't support config diff function.
 
-- validate-svi-service-config.yml
+  * validate-svi-service-config.yml
 
 This playbook validates deployed svi service configuration.
 
@@ -224,18 +232,69 @@ This playbook validates deployed svi service configuration.
 
 ```ansible-playbook -i ../../lab-3-create-service-data-model/data-models/hosts validate-svi-service-config.yml```
 
-- clean-svi-service-config.yml
+  * clean-svi-service-config.yml
 
 This playbook remove interface configuration from device if it has "remove" state in SVI service data model
 
-**j2-templates**
+* j2-templates
 
 Contains jinja2 interface configuration diff calculation template.
 
-**pre-config-setup**
+* pre-config-setup
 
 Contains playbooks for lab preconfiguration.
 
-**textfsm-templates**
+* textfsm-templates
 
 Contains textfsm templates.
+
+## Folder lab-5-logging-and-testing
+
+This folder contains logging and testing exercise solution.
+
+###### Folder structure
+
+* deploy-svi-service
+
+Contains playbook from previous lab 4.
+
+  * deploy-svi-service-config.yml
+  This playbook deploys svi service configuration to device. Here implemeted DEBUG functionality. It collects config changes in debug directory. To enable this feature, run this palybook with "debug=true" var, e.g.:
+
+  ```ansible-playbook -i ../../lab-3-create-service-data-model/data-models/hosts deploy-svi-service-config.yml -l hub-sw1 -e "debug=true"```
+
+* includes
+
+Contains tasks that checks SVI service data model.
+
+* j2-templates
+
+Contains templates from previous lab 4.
+
+* tests
+
+Contains invalid data models for unit testing.
+
+* svi-service-data-model-testing.yml
+
+This playbook checks SVI service data model for validity.
+
+* svi-service-data-model-unit-tests.sh
+
+Script for automation SVI service data model unit testing.
+
+###### Usage
+
+```sh svi-service-data-model-unit-tests.sh```
+
+```
+.. Initial test OK. Proceeding.
+Running scenario tests/nodes-svi-service-invalid-inventory_name.yml
+.. Failed as expected.
+Running scenario tests/nodes-svi-service-invalid-ip_address.yml
+.. Failed as expected.
+Running scenario tests/nodes-svi-service-invalid-state_name.yml
+.. Failed as expected.
+Running scenario tests/nodes-svi-service-invalid-vlan_range.yml
+.. Failed as expected.
+```
