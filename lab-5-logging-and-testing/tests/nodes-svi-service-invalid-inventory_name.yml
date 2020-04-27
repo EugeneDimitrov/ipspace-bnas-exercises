@@ -20,11 +20,12 @@ svi_service:
       description: Users
       state: active
       ip_address: 192.168.114.254/24
-  spoke2-r1:
+# Invalid inventory name. Host not in svi service group
+  dc-r1:
     - interface_name: GigabitEthernet0/1.115
       vlan_id: 115
       description: Users
-      state: active
+      state: disabled
       ip_address: 192.168.115.254/24
     - interface_name: GigabitEthernet0/1.116
       vlan_id: 116
@@ -33,7 +34,7 @@ svi_service:
       ip_address: 192.168.116.254/24
   spoke3-r1:
     - interface_name: ether2.117
-      vlan_id: 117
+      vlan_id: 201
       description: Users
       state: active
       ip_address: 192.168.116.254/24

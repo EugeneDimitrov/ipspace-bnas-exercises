@@ -24,7 +24,7 @@ sites:
 
   hub:
     - interface_name: Vlan112
-      vlan_id: 112 
+      vlan_id: 112
       description: Users
       ip_subnet: 192.168.112.0/24
       state: remove
@@ -32,7 +32,7 @@ sites:
         - hub-sw1
 
     - interface_name: Vlan113
-      vlan_id: 113    
+      vlan_id: 113
       description: VoIP
       ip_subnet: 192.168.113.0/24
       state: active
@@ -54,7 +54,7 @@ sites:
       ip_subnet: 192.168.115.0/24
       state: active
       nodes:
-        - spoke2-r1 
+        - spoke2-r1
 
     - interface_name: GigabitEthernet0/1.116
       vlan_id: 116
@@ -62,7 +62,7 @@ sites:
       ip_subnet: 192.168.116.0/24
       state: shutdown
       nodes:
-        - spoke2-r1 
+        - spoke2-r1
 
     - interface_name: ether2.117
       vlan_id: 117

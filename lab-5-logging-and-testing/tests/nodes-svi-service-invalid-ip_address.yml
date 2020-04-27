@@ -13,7 +13,8 @@ svi_service:
       vlan_id: 113
       description: VoIP
       state: active
-      ip_address: 192.168.113.254/24
+# Invalid IP address
+      ip_address: 192.168.113.256/24
   spoke1-r1:
     - interface_name: GigabitEthernet0/1.114
       vlan_id: 114
